@@ -1,0 +1,23 @@
+{
+ "creation": "2022-06-21 17:30:54.188594",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "{\"company\":\"frappe.defaults.get_user_default(\\\"Company\\\")\"}",
+ "filters_json": "{\"ageing_based_on\":\"Due Date\",\"range1\":30,\"range2\":60,\"range3\":90,\"range4\":120,\"group_by_party\":0,\"based_on_payment_terms\":0,\"show_future_payments\":0,\"show_delivery_notes\":0,\"show_sales_person\":0,\"show_remarks\":0,\"report_date\":\"2022-06-21\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Outstanding",
+ "modified": "2022-06-21 17:33:43.104773",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Outstanding",
+ "owner": "tech@inspiredholding.com",
+ "report_field": "outstanding",
+ "report_function": "Sum",
+ "report_name": "Accounts Receivable",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

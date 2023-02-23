@@ -1,0 +1,41 @@
+{
+ "allow_roles": [
+  {
+   "role": "All"
+  }
+ ],
+ "creation": "2022-01-28 14:04:53.004851",
+ "docstatus": 0,
+ "doctype": "Module Onboarding",
+ "documentation_url": "https://docs.erpnext.com/docs/user/manual/en/human-resources",
+ "idx": 0,
+ "is_complete": 0,
+ "modified": "2022-01-28 14:04:53.004851",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee HR Activities ",
+ "owner": "Administrator",
+ "steps": [
+  {
+   "step": "Daily Check In"
+  },
+  {
+   "step": "Create Self/Corrective Check In / Out"
+  },
+  {
+   "step": "Create Leave Application"
+  },
+  {
+   "step": "Create Request Form"
+  },
+  {
+   "step": "Create Passport Release Form"
+  },
+  {
+   "step": "Create Loan / Salary Advance"
+  }
+ ],
+ "subtitle": "Common SOPs",
+ "success_message": "Great! Your just Learned HR Module!",
+ "title": "Employee HR Activities "
+}

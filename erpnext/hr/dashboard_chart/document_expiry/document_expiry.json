@@ -1,0 +1,37 @@
+{
+ "based_on": "",
+ "chart_name": "Document Expiry",
+ "chart_type": "Report",
+ "creation": "2022-01-14 17:54:06.732821",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"expiry_date\":\"2022-01-14\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2022-01-14 18:03:15.508693",
+ "modified_by": "tech@inspiredholding.com",
+ "module": "HR",
+ "name": "Document Expiry",
+ "number_of_groups": 0,
+ "owner": "tech@inspiredholding.com",
+ "parent_document_type": "",
+ "report_name": "Employee Document Expiry",
+ "source": "",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "x_field": "employee_name",
+ "y_axis": [
+  {
+   "color": "#CB2929",
+   "y_field": "remaining_days"
+  }
+ ]
+}

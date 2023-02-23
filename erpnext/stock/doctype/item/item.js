@@ -452,8 +452,26 @@ $.extend(erpnext.item, {
 
 		let promises = [];
 		let attr_val_fields = {};
-
+        
 		function make_fields_from_attribute_values(attr_dict) {
+           //console.log(Object.keys(attr_dict));
+
+            
+            attr_dict = Object.keys(attr_dict) 
+              
+            // Sort and calling a method on
+            // keys on sorted fashion.
+            .sort().reduce(function(Obj, key) { 
+                      
+                // Adding the key-value pair to the
+                // new object in sorted keys manner
+                Obj[key] = attr_dict[key]; 
+                return Obj; 
+            }, {});
+            
+            console.log(Object.keys(attr_dict));
+
+
 			let fields = [];
 			Object.keys(attr_dict).forEach((name, i) => {
 				if(i % 3 === 0){
@@ -708,6 +726,7 @@ $.extend(erpnext.item, {
 			field.$input
 				.on('input', function(e) {
 					var term = e.target.value;
+                    
 					frappe.call({
 						method: "erpnext.stock.doctype.item.item.get_item_attribute",
 						args: {
@@ -715,9 +734,17 @@ $.extend(erpnext.item, {
 							attribute_value: term
 						},
 						callback: function(r) {
+                            console.log(r.message);
 							if (r.message) {
-								e.target.awesomplete.list = r.message.map(function(d) { return d.attribute_value; });
+                                console.log(d.fields_dict["Color Code"].$input[0].value);
+                                            
+                                e.target.awesomplete.list = r.message.map(function(d) { return d.attribute_value; }); 
+                                
+								
 							}
+                            
+                            
+                            
 						}
 					});
 				})

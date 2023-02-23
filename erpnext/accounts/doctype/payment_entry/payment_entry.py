@@ -269,7 +269,7 @@ class PaymentEntry(AccountsController):
 					self.company_currency, self.posting_date)
 
 	def validate_mandatory(self):
-		for field in ("paid_amount", "received_amount", "source_exchange_rate", "target_exchange_rate"):
+		for field in ("source_exchange_rate", "target_exchange_rate"):
 			if not self.get(field):
 				frappe.throw(_("{0} is mandatory").format(self.meta.get_label(field)))
 

@@ -1,0 +1,23 @@
+{
+ "aggregate_function_based_on": "base_net_total",
+ "creation": "2022-09-06 13:40:45.074646",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Sales Invoice",
+ "dynamic_filters_json": "",
+ "filters_json": "[[\"Sales Invoice\",\"docstatus\",\"=\",\"1\",false],[\"Sales Invoice\",\"posting_date\",\"Timespan\",\"this year\",false],[\"Sales Invoice\",\"is_opening\",\"=\",\"No\",false],[\"Sales Invoice\",\"company\",\"=\",\"IHG INDUSTRY LLC\",false],[\"Sales Invoice\",\"is_internal_customer\",\"=\",0,false]]",
+ "function": "Sum",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Sales without Intercompany - IHG Industry",
+ "modified": "2022-09-06 13:40:45.074646",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Sales without Intercompany - IHG Industry",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Yearly",
+ "type": "Document Type"
+}

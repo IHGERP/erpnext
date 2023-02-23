@@ -351,6 +351,8 @@ def make_return_doc(doctype, source_name, target_doc=None):
 			returned_qty_map = get_returned_qty_map_for_row(source_doc.name, doctype)
 			target_doc.qty = -1 * flt(source_doc.qty - (returned_qty_map.get('qty') or 0))
 			target_doc.stock_qty = -1 * flt(source_doc.stock_qty - (returned_qty_map.get('stock_qty') or 0))
+			target_doc.rate = source_doc.rate
+			target_doc.amount = flt(target_doc.qty * target_doc.rate)
 
 			target_doc.sales_order = source_doc.sales_order
 			target_doc.delivery_note = source_doc.delivery_note

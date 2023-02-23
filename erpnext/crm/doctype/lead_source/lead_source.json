@@ -26,34 +26,29 @@
   }
  ],
  "links": [],
- "modified": "2021-02-08 12:51:48.971517",
+ "modified": "2022-12-15 09:45:35.491140",
  "modified_by": "Administrator",
  "module": "CRM",
  "name": "Lead Source",
  "owner": "Administrator",
  "permissions": [
   {
-   "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "Sales Manager",
-   "share": 1,
-   "write": 1
+   "share": 1
   },
   {
-   "create": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "Sales User",
-   "share": 1,
-   "write": 1
+   "share": 1
   }
  ],
  "quick_entry": 1,

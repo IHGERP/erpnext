@@ -106,7 +106,8 @@ def mark_attendance_and_link_log(logs, attendance_status, attendance_date, worki
 				'late_entry': late_entry,
 				'early_exit': early_exit,
 				'in_time': in_time,
-				'out_time': out_time
+				'out_time': out_time,
+                'data_sample':"test"
 			}
 			attendance = frappe.get_doc(doc_dict).insert()
 			attendance.submit()

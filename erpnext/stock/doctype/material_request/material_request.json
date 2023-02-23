@@ -68,15 +68,17 @@
    "print_hide": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "material_request_type",
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Purpose",
-   "options": "Purchase\nMaterial Transfer\nMaterial Issue\nManufacture\nCustomer Provided",
+   "options": "Purchase\nAtt Material Transfer\nAtt Material Issue\nManufacture\nCustomer Provided",
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "depends_on": "eval:doc.material_request_type==\"Customer Provided\"",
    "fieldname": "customer",
    "fieldtype": "Link",
@@ -111,6 +113,7 @@
    "width": "150px"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
@@ -121,7 +124,6 @@
    "options": "Material Request",
    "print_hide": 1,
    "print_width": "150px",
-   "read_only": 1,
    "width": "150px"
   },
   {
@@ -279,6 +281,7 @@
    "label": "Warehouse"
   },
   {
+   "allow_on_submit": 1,
    "description": "Sets 'Target Warehouse' in each row of the Items table.",
    "fieldname": "set_warehouse",
    "fieldtype": "Link",
@@ -294,6 +297,7 @@
    "width": "50%"
   },
   {
+   "allow_on_submit": 1,
    "depends_on": "eval:doc.material_request_type == 'Material Transfer'",
    "description": "Sets 'Source Warehouse' in each row of the Items table.",
    "fieldname": "set_from_warehouse",
@@ -315,7 +319,7 @@
  "idx": 70,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-08-17 20:16:12.737743",
+ "modified": "2023-01-18 08:58:42.341856",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Material Request",
@@ -386,5 +390,7 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "title_field": "title"
+ "title_field": "title",
+ "track_changes": 1,
+ "track_seen": 1
 }

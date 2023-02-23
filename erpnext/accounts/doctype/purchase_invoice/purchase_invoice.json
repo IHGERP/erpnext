@@ -557,9 +557,10 @@
    "options": "fa fa-shopping-cart"
   },
   {
-   "default": "0",
+   "default": "1",
    "fieldname": "update_stock",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Update Stock",
    "print_hide": 1
   },
@@ -1423,12 +1424,11 @@
  "idx": 204,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-11-25 13:31:02.716727",
+ "modified": "2023-02-15 12:07:35.787821",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Purchase Invoice",
  "name_case": "Title Case",
- "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

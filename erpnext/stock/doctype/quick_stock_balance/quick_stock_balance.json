@@ -1,5 +1,5 @@
 {
- "_comments": "[]",
+ "actions": [],
  "allow_copy": 1,
  "creation": "2019-09-06 12:01:33.933063",
  "doctype": "DocType",
@@ -17,7 +17,8 @@
   "sec_break",
   "qty",
   "col_break2",
-  "value"
+  "value",
+  "rrp"
  ],
  "fields": [
   {
@@ -43,7 +44,8 @@
   {
    "fieldname": "item_barcode",
    "fieldtype": "Data",
-   "label": "Item Barcode"
+   "label": "Item Barcode",
+   "options": "Barcode"
   },
   {
    "fetch_from": "item.item_name",
@@ -94,11 +96,17 @@
    "in_list_view": 1,
    "label": "Date",
    "reqd": 1
+  },
+  {
+   "fieldname": "rrp",
+   "fieldtype": "Currency",
+   "label": "RRP"
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
- "modified": "2019-10-04 21:59:48.597497",
+ "links": [],
+ "modified": "2022-08-12 10:58:24.730386",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Quick Stock Balance",

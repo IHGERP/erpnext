@@ -1,0 +1,31 @@
+{
+ "chart_name": "LEDWORLD SALARY",
+ "chart_type": "Report",
+ "creation": "2022-02-24 17:11:32.471280",
+ "custom_options": "{\"x_field\": \"branch\", \"chart_type\": \"Pie\", \"y_axis_fields\": [{\"idx\": 1, \"__islocal\": true, \"name\": \"row 1\", \"y_field\": \"gross_pay\"}, {\"idx\": 2, \"__islocal\": true, \"name\": \"row 2\", \"y_field\": \"total_deduction\"}, {\"idx\": 3, \"__islocal\": true, \"name\": \"row 3\", \"y_field\": \"net_pay\"}], \"y_fields\": [\"gross_pay\", \"total_deduction\", \"net_pay\"], \"colors\": [null, null, null]}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{\"from_date\":\"2022-01-24\",\"to_date\":\"2022-02-24\",\"currency\":\"AED\",\"company\":\"LED WORLD LLC\",\"docstatus\":\"Draft\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2022-02-24 17:14:17.458470",
+ "modified_by": "tech@inspiredholding.com",
+ "module": "HR",
+ "name": "LEDWORLD SALARY",
+ "number_of_groups": 0,
+ "owner": "tech@inspiredholding.com",
+ "report_name": "Salary Register",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Pie",
+ "use_report_chart": 0,
+ "x_field": "branch",
+ "y_axis": [
+  {
+   "y_field": "net_pay"
+  }
+ ]
+}

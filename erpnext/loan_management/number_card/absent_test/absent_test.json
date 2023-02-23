@@ -1,0 +1,22 @@
+{
+ "creation": "2022-04-12 12:55:10.029628",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "",
+ "filters_json": "null",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Absent Test",
+ "method": "qcshr.controller.variant_pricing.get_emp_absent_current",
+ "modified": "2022-04-20 09:04:48.296432",
+ "modified_by": "Administrator",
+ "module": "Loan Management",
+ "name": "Absent Test",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Custom"
+}

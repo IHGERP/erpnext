@@ -492,7 +492,7 @@ def send_emails(args):
 	subject = (_("Credit limit reached for customer {0}").format(args.get('customer')))
 	message = (_("Credit limit has been crossed for customer {0} ({1}/{2})")
 			.format(args.get('customer'), args.get('customer_outstanding'), args.get('credit_limit')))
-	frappe.sendmail(recipients=args.get('credit_controller_users_list'), subject=subject, message=message)
+	#frappe.sendmail(recipients=args.get('credit_controller_users_list'), subject=subject, message=message)
 
 def get_customer_outstanding(customer, company, ignore_outstanding_sales_order=False, cost_center=None):
 	# Outstanding based on GL Entries

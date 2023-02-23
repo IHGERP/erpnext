@@ -78,8 +78,7 @@
    "fieldname": "attendance",
    "fieldtype": "Link",
    "label": "Attendance Marked",
-   "options": "Attendance",
-   "read_only": 1
+   "options": "Attendance"
   },
   {
    "fieldname": "shift_start",
@@ -107,7 +106,7 @@
   }
  ],
  "links": [],
- "modified": "2020-07-08 11:02:32.660986",
+ "modified": "2022-01-11 09:50:01.320672",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Checkin",

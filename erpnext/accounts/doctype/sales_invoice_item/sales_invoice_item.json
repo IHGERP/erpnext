@@ -204,6 +204,7 @@
    "fieldtype": "Float",
    "label": "UOM Conversion Factor",
    "print_hide": 1,
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -841,11 +842,10 @@
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-05 12:24:54.968907",
+ "modified": "2023-02-01 20:30:41.736271",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice Item",
- "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

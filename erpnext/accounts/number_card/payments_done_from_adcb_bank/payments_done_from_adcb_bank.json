@@ -1,0 +1,22 @@
+{
+ "aggregate_function_based_on": "credit",
+ "creation": "2020-07-17 11:25:34.700137",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "GL Entry",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"GL Entry\",\"company\",\"=\",\"LED WORLD LLC\",false],[\"GL Entry\",\"posting_date\",\"Timespan\",\"this year\",false],[\"GL Entry\",\"account\",\"=\",\"ADCB - LED WORLD AED - LDW\",false],[\"GL Entry\",\"credit\",\">\",0,false],[\"GL Entry\",\"is_cancelled\",\"=\",0,false]]",
+ "function": "Sum",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Payments done from ADCB Bank",
+ "modified": "2022-08-15 12:03:52.908274",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Payments done from ADCB Bank",
+ "owner": "Administrator",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Yearly",
+ "type": "Document Type"
+}

@@ -14,6 +14,7 @@ from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 from erpnext.stock.utils import get_stock_balance
 
 
+
 class OpeningEntryAccountError(frappe.ValidationError): pass
 class EmptyStockReconciliationItemsError(frappe.ValidationError): pass
 
@@ -28,7 +29,7 @@ class StockReconciliation(StockController):
 		if not self.cost_center:
 			self.cost_center = frappe.get_cached_value('Company',  self.company,  "cost_center")
 		self.validate_posting_time()
-		self.remove_items_with_no_change()
+		#self.remove_items_with_no_change()
 		self.validate_data()
 		self.validate_expense_account()
 		self.validate_customer_provided_item()
@@ -88,14 +89,14 @@ class StockReconciliation(StockController):
 		items = list(filter(lambda d: _changed(d), self.items))
 
 		if not items:
-			frappe.throw(_("None of the items have any change in quantity or value."),
-				EmptyStockReconciliationItemsError)
+			pass
+			#frappe.throw(_("None of the items have any change in quantity or value."),EmptyStockReconciliationItemsError)
 
 		elif len(items) != len(self.items):
 			self.items = items
 			for i, item in enumerate(self.items):
 				item.idx = i + 1
-			frappe.msgprint(_("Removed items with no change in quantity or value."))
+			#frappe.msgprint(_("Removed items with no change in quantity or value."))
 
 	def validate_data(self):
 		def _get_msg(row_num, msg):
@@ -130,9 +131,9 @@ class StockReconciliation(StockController):
 					_("Please specify either Quantity or Valuation Rate or both")))
 
 			# do not allow negative quantity
-			if flt(row.qty) < 0:
-				self.validation_messages.append(_get_msg(row_num,
-					_("Negative Quantity is not allowed")))
+			#if flt(row.qty) < 0:
+			#	self.validation_messages.append(_get_msg(row_num,
+			#		_("Negative Quantity is not allowed")))
 
 			# do not allow negative valuation
 			if flt(row.valuation_rate) < 0:

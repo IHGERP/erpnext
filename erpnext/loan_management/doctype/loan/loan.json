@@ -122,6 +122,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "depends_on": "eval:doc.applicant_type==\"Employee\"",
    "fieldname": "repay_from_salary",
@@ -361,11 +362,10 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-20 08:28:16.796105",
+ "modified": "2022-05-31 17:17:25.981676",
  "modified_by": "Administrator",
  "module": "Loan Management",
  "name": "Loan",
- "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

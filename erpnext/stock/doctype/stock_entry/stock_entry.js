@@ -251,7 +251,7 @@ frappe.ui.form.on('Stock Entry', {
 			}, __("Get Items From"));
 
 			frm.add_custom_button(__('Material Request'), function() {
-				const allowed_request_types = ["Material Transfer", "Material Issue", "Customer Provided"];
+				const allowed_request_types = ["Material Transfer", "Material Issue", "Customer Provided", "Purchase"];
 				const depends_on_condition = "eval:doc.material_request_type==='Customer Provided'";
 				const d = erpnext.utils.map_current_doc({
 					method: "erpnext.stock.doctype.material_request.material_request.make_stock_entry",
@@ -282,7 +282,7 @@ frappe.ui.form.on('Stock Entry', {
 					get_query_filters: {
 						docstatus: 1,
 						material_request_type: ["in", allowed_request_types],
-						status: ["not in", ["Transferred", "Issued", "Cancelled", "Stopped"]]
+						status: ["not in", ["Cancelled", "Stopped"]] // removed "Transferred", "Issued", 
 					}
 				})
 			}, __("Get Items From"));
@@ -1063,8 +1063,8 @@ function attach_bom_items(bom_no) {
 
 function check_should_not_attach_bom_items(bom_no) {
   return (
-    bom_no === undefined ||
-    (erpnext.stock.bom && erpnext.stock.bom.name === bom_no)
+	bom_no === undefined ||
+	(erpnext.stock.bom && erpnext.stock.bom.name === bom_no)
   );
 }
 

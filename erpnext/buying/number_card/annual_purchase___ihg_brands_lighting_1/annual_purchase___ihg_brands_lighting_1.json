@@ -1,0 +1,23 @@
+{
+ "aggregate_function_based_on": "base_net_total",
+ "creation": "2022-08-15 12:54:47.242381",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Purchase Order",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"Purchase Order\",\"transaction_date\",\"Timespan\",\"this year\",false],[\"Purchase Order\",\"status\",\"not in\",[\"Draft\",\"Cancelled\",\"Closed\",null],false],[\"Purchase Order\",\"docstatus\",\"=\",\"1\",false],[\"Purchase Order\",\"company\",\"=\",\"IHG BRANDS LIGHTING LLC\",false]]",
+ "function": "Sum",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Annual Purchase - IHG Brands Lighting",
+ "modified": "2022-08-15 12:54:47.242381",
+ "modified_by": "Administrator",
+ "module": "Buying",
+ "name": "Annual Purchase - IHG Brands Lighting-1",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Yearly",
+ "type": "Document Type"
+}

@@ -54,6 +54,7 @@
   "column_break_28",
   "total",
   "net_total",
+  "grand_total",
   "total_net_weight",
   "taxes_section",
   "tax_category",
@@ -82,7 +83,6 @@
   "base_in_words",
   "base_rounded_total",
   "column_break3",
-  "grand_total",
   "rounding_adjustment",
   "rounded_total",
   "in_words",
@@ -220,6 +220,7 @@
    "width": "100px"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "valid_till",
    "fieldtype": "Date",
    "label": "Valid Till"
@@ -764,6 +765,7 @@
    "report_hide": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "terms",
    "fieldtype": "Text Editor",
    "label": "Term Details",
@@ -952,7 +954,7 @@
  "idx": 82,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-11-30 01:33:21.106073",
+ "modified": "2023-01-19 11:13:05.493298",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation",
@@ -1047,5 +1049,8 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "timeline_field": "party_name",
- "title_field": "title"
+ "title_field": "title",
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
 }

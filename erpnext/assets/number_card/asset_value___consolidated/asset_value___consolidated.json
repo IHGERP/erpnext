@@ -1,0 +1,23 @@
+{
+ "aggregate_function_based_on": "value_after_depreciation",
+ "creation": "2022-09-06 15:56:49.982920",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Asset",
+ "dynamic_filters_json": "",
+ "filters_json": "[[\"Asset\",\"status\",\"=\",\"Submitted\",false]]",
+ "function": "Sum",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Asset Value - Group",
+ "modified": "2022-09-12 23:19:18.903386",
+ "modified_by": "Administrator",
+ "module": "Assets",
+ "name": "Asset Value - Consolidated",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Yearly",
+ "type": "Document Type"
+}

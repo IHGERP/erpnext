@@ -1,0 +1,23 @@
+{
+ "creation": "2022-04-07 15:51:25.421098",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "{\"from_date\":\"frappe.utils.get_first_day(nowdate())\",\"to_date\":\"frappe.utils.get_last_day(nowdate())\"}",
+ "filters_json": "{\"currency\":\"AED\",\"company\":\"IHG INDUSTRY LLC\",\"docstatus\":\"Draft\",\"from_date\":\"2022-03-22\",\"to_date\":\"2022-04-22\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "IHG INDUSTRY - NETPAY",
+ "modified": "2022-04-22 10:48:27.370760",
+ "modified_by": "tech@inspiredholding.com",
+ "module": "HR",
+ "name": "IHG INDUSTRY - NETPAY",
+ "owner": "tech@inspiredholding.com",
+ "report_field": "net_pay",
+ "report_function": "Sum",
+ "report_name": "Salary Register",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

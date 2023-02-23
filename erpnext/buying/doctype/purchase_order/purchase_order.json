@@ -2,6 +2,7 @@
  "actions": [],
  "allow_auto_repeat": 1,
  "allow_import": 1,
+ "allow_rename": 1,
  "autoname": "naming_series:",
  "creation": "2013-05-21 16:16:39",
  "doctype": "DocType",
@@ -886,6 +887,7 @@
    "options": "fa fa-legal"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "tc_name",
    "fieldtype": "Link",
    "label": "Terms",
@@ -895,6 +897,7 @@
    "print_hide": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "terms",
    "fieldtype": "Text Editor",
    "label": "Terms and Conditions",
@@ -1144,7 +1147,7 @@
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-09-28 13:10:47.955401",
+ "modified": "2022-07-05 10:28:53.669503",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",

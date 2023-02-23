@@ -1,0 +1,22 @@
+{
+ "color": "#43e65b",
+ "creation": "2020-07-22 11:56:32.914057",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Employee",
+ "dynamic_filters_json": "[[\"Employee\",\"company\",\"=\",\"frappe.defaults.get_user_default(\\\"Company\\\")\"]]",
+ "filters_json": "[[\"Employee\",\"date_of_joining\",\"Timespan\",\"last month\",false]]",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "New Joinees (Last Month)",
+ "modified": "2023-02-20 14:10:03.327451",
+ "modified_by": "tech@inspiredholding.com",
+ "module": "HR",
+ "name": "New Joinees (Last Month)",
+ "owner": "Administrator",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Monthly",
+ "type": "Document Type"
+}

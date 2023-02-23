@@ -1,4 +1,5 @@
 {
+ "color": "#43e65b",
  "creation": "2020-07-22 11:56:32.914057",
  "docstatus": 0,
  "doctype": "Number Card",
@@ -10,7 +11,7 @@
  "is_public": 1,
  "is_standard": 1,
  "label": "New Joinees (Last year)",
- "modified": "2020-07-22 14:32:09.352301",
+ "modified": "2022-01-21 15:30:28.714439",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "New Joinees (Last year)",

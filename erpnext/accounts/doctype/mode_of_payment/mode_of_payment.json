@@ -21,7 +21,6 @@
    "label": "Mode of Payment",
    "oldfieldname": "mode_of_payment",
    "oldfieldtype": "Data",
-   "reqd": 1,
    "unique": 1
   },
   {
@@ -48,7 +47,7 @@
  "idx": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2020-09-18 17:57:23.835236",
+ "modified": "2022-07-26 14:04:20.090152",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Mode of Payment",

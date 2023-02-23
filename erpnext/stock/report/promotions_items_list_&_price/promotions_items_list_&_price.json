@@ -1,0 +1,28 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2022-10-08 13:42:36.210852",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "LEDWorld",
+ "modified": "2022-10-10 15:38:37.379600",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Promotions Items List & Price",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT item_code as \"Item Code:Data:200\", brand as `Brands:Data:200`, price_list_rate  as \"Promo Price:Data:200\", (select price_list_rate AS RRPPrice from `tabItem Price` where item_code=A.item_code AND price_list='RRP' GROUP BY item_code) AS \"RRP:Data:150\", (select price_list_rate AS RRPPrice from `tabItem Price` where item_code=A.item_code AND price_list='MRP' GROUP BY item_code) AS \"MRP:Data:150\", item_description as \"Description:Data:500\" FROM `tabItem Price` as A where price_list='Promo'",
+ "ref_doctype": "Item",
+ "report_name": "Promotions Items List & Price",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "Purchase Manager"
+  }
+ ]
+}

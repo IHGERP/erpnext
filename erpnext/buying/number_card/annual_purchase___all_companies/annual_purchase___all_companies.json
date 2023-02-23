@@ -1,0 +1,23 @@
+{
+ "aggregate_function_based_on": "base_net_total",
+ "creation": "2022-08-11 17:56:35.210439",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Purchase Order",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"Purchase Order\",\"transaction_date\",\"Timespan\",\"this year\",false],[\"Purchase Order\",\"status\",\"not in\",[\"Draft\",\"Cancelled\",\"Closed\",null],false],[\"Purchase Order\",\"docstatus\",\"=\",\"1\",false],[\"Purchase Order\",\"company\",\"=\",\"LED WORLD LLC\",false]]",
+ "function": "Sum",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Annual Purchase - LED World",
+ "modified": "2022-08-15 12:17:44.129481",
+ "modified_by": "Administrator",
+ "module": "Buying",
+ "name": "Annual Purchase - All Companies",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Yearly",
+ "type": "Document Type"
+}

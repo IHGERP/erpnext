@@ -209,7 +209,8 @@ class DeliveryNote(SellingController):
 		self.update_billing_status()
 
 		if not self.is_return:
-			self.check_credit_limit()
+			pass
+			#self.check_credit_limit()
 		elif self.issue_credit_note:
 			self.make_return_invoice()
 		# Updating stock ledger should always be called after updating prevdoc status,
@@ -470,7 +471,8 @@ def make_sales_invoice(source_name, target_doc=None):
 		"Delivery Note": {
 			"doctype": "Sales Invoice",
 			"field_map": {
-				"is_return": "is_return"
+				"is_return": "is_return",
+                "is_pos": 0
 			},
 			"validation": {
 				"docstatus": ["=", 1]

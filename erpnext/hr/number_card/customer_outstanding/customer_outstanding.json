@@ -1,0 +1,22 @@
+{
+ "creation": "2022-06-21 17:36:42.647636",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_json": "{\"company\":\"LED WORLD LLC\",\"from_date\":\"2022-05-21\",\"to_date\":\"2022-06-21\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Customer Outstanding",
+ "modified": "2022-06-21 17:36:42.713084",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Customer Outstanding",
+ "owner": "Administrator",
+ "report_field": "closing_balance",
+ "report_function": "Sum",
+ "report_name": "Customer Ledger Summary",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

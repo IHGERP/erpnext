@@ -1,0 +1,23 @@
+{
+ "aggregate_function_based_on": "credit",
+ "creation": "2022-08-15 15:46:13.394668",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "GL Entry",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"GL Entry\",\"company\",\"=\",\"LED WORLD LLC\",false],[\"GL Entry\",\"posting_date\",\"Timespan\",\"this year\",false],[\"GL Entry\",\"account\",\"=\",\"Mashreq bank - LDW\",false],[\"GL Entry\",\"credit\",\">\",0,false],[\"GL Entry\",\"is_cancelled\",\"=\",0,false]]",
+ "function": "Sum",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Payments done from Mashreq - LED World",
+ "modified": "2022-08-15 15:46:13.394668",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Payments done from Mashreq - LED World",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Yearly",
+ "type": "Document Type"
+}

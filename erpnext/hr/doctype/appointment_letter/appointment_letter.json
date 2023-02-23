@@ -2,7 +2,6 @@
  "actions": [],
  "autoname": "HR-APP-LETTER-.#####",
  "creation": "2019-12-26 12:35:49.574828",
- "default_print_format": "Standard Appointment Letter",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -15,8 +14,10 @@
   "appointment_letter_template",
   "body_section",
   "introduction",
+  "offer_salary",
   "terms",
-  "closing_notes"
+  "closing_notes",
+  "amended_from"
  ],
  "fields": [
   {
@@ -39,8 +40,7 @@
    "fieldname": "appointment_letter_template",
    "fieldtype": "Link",
    "label": "Appointment Letter Template",
-   "options": "Appointment Letter Template",
-   "reqd": 1
+   "options": "Appointment Letter Template"
   },
   {
    "fetch_from": "appointment_letter_template.introduction",
@@ -83,10 +83,26 @@
    "label": "Terms",
    "options": "Appointment Letter content",
    "reqd": 1
+  },
+  {
+   "fieldname": "offer_salary",
+   "fieldtype": "Table",
+   "label": "Offer Salary",
+   "options": "Offer Letter Salary"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Appointment Letter",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
+ "is_submittable": 1,
  "links": [],
- "modified": "2020-01-21 17:30:36.334395",
+ "modified": "2022-05-30 15:25:24.840614",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Appointment Letter",
@@ -120,5 +136,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
 }

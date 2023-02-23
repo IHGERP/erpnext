@@ -1,0 +1,23 @@
+{
+ "aggregate_function_based_on": "",
+ "creation": "2022-09-13 13:29:08.242881",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Attendance",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"Attendance\",\"total_missed_hours\",\">\",0,false],[\"Attendance\",\"docstatus\",\"=\",\"1\",false],[\"Attendance\",\"attendance_date\",\"Timespan\",\"this month\",false]]",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Missed hours ",
+ "modified": "2022-09-13 13:29:16.774467",
+ "modified_by": "hr@ihgind.com",
+ "module": "HR",
+ "name": "Missed hours",
+ "owner": "hr@ihgind.com",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Document Type"
+}

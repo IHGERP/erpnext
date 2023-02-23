@@ -1,0 +1,23 @@
+{
+ "chart_name": "Profit and Loss - LED World",
+ "chart_type": "Report",
+ "creation": "2020-07-17 11:25:34.448572",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{\"from_fiscal_year\":\"frappe.sys_defaults.fiscal_year\",\"to_fiscal_year\":\"frappe.sys_defaults.fiscal_year\"}",
+ "filters_json": "{\"company\":\"LED WORLD LLC\",\"filter_based_on\":\"Fiscal Year\",\"period_start_date\":\"2022-01-01\",\"period_end_date\":\"2022-12-31\",\"periodicity\":\"Yearly\",\"include_default_book_entries\":1}",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2022-09-27 10:08:48.007758",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Profit and Loss - LED World",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Profit and Loss Statement",
+ "timeseries": 0,
+ "type": "Bar",
+ "use_report_chart": 1,
+ "y_axis": []
+}

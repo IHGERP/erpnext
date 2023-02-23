@@ -533,7 +533,8 @@ def make_material_request(source_name, target_doc=None):
 			"doctype": "Material Request Item",
 			"field_map": {
 				"name": "sales_order_item",
-				"parent": "sales_order"
+				"parent": "sales_order",
+				"rate": "saleable_rate"
 			},
 			"condition": lambda doc: not frappe.db.exists('Product Bundle', doc.item_code) and doc.stock_qty > requested_item_qty.get(doc.name, 0),
 			"postprocess": update_item

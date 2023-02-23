@@ -643,7 +643,6 @@
   {
    "fieldname": "si_detail",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Against Sales Invoice Item",
    "no_copy": 1,
    "print_hide": 1,
@@ -767,7 +766,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-06 12:12:44.018872",
+ "modified": "2023-02-01 20:31:09.984988",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Delivery Note Item",

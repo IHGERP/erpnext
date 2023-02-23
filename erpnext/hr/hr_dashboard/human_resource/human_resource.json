@@ -1,38 +1,71 @@
 {
  "cards": [
   {
-   "card": "Total Employees"
+   "card": "Total Employee"
   },
   {
-   "card": "New Joinees (Last year)"
+   "card": "On Leave Yesterday"
   },
   {
-   "card": "Employees Left (Last year)"
+   "card": "On Leave Today"
+  },
+  {
+   "card": "Annual Leave"
   },
   {
    "card": "Total Applicants (Last month)"
+  },
+  {
+   "card": "Pending Leave Requests"
+  },
+  {
+   "card": "Absent this month"
+  },
+  {
+   "card": "Leave Pending Approval Dept Head"
+  },
+  {
+   "card": "Leave Pending HR Approval"
+  },
+  {
+   "card": "Sick leave - This Month"
+  },
+  {
+   "card": "Missed hours"
+  },
+  {
+   "card": "Visa Renewal Overdue - This Quarter"
+  },
+  {
+   "card": "Employee Document Expiry - This Quarter"
+  },
+  {
+   "card": "Joined This Month"
+  },
+  {
+   "card": "New Joinee - Last Month"
+  },
+  {
+   "card": "New Joinee - Last Quarter"
+  },
+  {
+   "card": "Employees Left This Month"
+  },
+  {
+   "card": "Employees Left - Last Month"
+  },
+  {
+   "card": "Employees Left- Last Quarter"
   }
  ],
  "charts": [
   {
-   "chart": "Attendance Count",
+   "chart": "Department Wise Employee Count",
    "width": "Full"
   },
   {
-   "chart": "Gender Diversity Ratio",
-   "width": "Half"
-  },
-  {
    "chart": "Job Application Status",
-   "width": "Half"
-  },
-  {
-   "chart": "Designation Wise Employee Count",
-   "width": "Half"
-  },
-  {
-   "chart": "Department Wise Employee Count",
-   "width": "Half"
+   "width": "Full"
   },
   {
    "chart": "Designation Wise Openings",
@@ -50,8 +83,8 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2020-07-22 14:42:12.789249",
- "modified_by": "Administrator",
+ "modified": "2023-02-20 16:07:01.591586",
+ "modified_by": "tech@inspiredholding.com",
  "module": "HR",
  "name": "Human Resource",
  "owner": "Administrator"

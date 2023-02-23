@@ -260,7 +260,6 @@
    "label": "Payment Days",
    "oldfieldname": "payment_days",
    "oldfieldtype": "Float",
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -647,7 +646,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-10-08 11:48:47.098248",
+ "modified": "2022-12-05 16:32:01.897481",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
@@ -655,6 +654,7 @@
  "permissions": [
   {
    "create": 1,
+   "delete": 1,
    "email": 1,
    "print": 1,
    "read": 1,

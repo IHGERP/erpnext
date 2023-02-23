@@ -303,7 +303,7 @@ def make_purchase_order(source_name, target_doc=None, args=None):
 			"doctype": "Purchase Order",
 			"validation": {
 				"docstatus": ["=", 1],
-				"material_request_type": ["=", "Purchase"]
+				#"material_request_type": ["=", "Purchase"]
 			}
 		},
 		"Material Request Item": {
@@ -330,7 +330,7 @@ def make_request_for_quotation(source_name, target_doc=None):
 			"doctype": "Request for Quotation",
 			"validation": {
 				"docstatus": ["=", 1],
-				"material_request_type": ["=", "Purchase"]
+				#"material_request_type": ["=", "Purchase"]
 			}
 		},
 		"Material Request Item": {
@@ -496,7 +496,7 @@ def make_stock_entry(source_name, target_doc=None):
 			"doctype": "Stock Entry",
 			"validation": {
 				"docstatus": ["=", 1],
-				"material_request_type": ["in", ["Material Transfer", "Material Issue", "Customer Provided"]]
+				#"material_request_type": ["in", ["Material Transfer", "Material Issue", "Customer Provided"]]
 			}
 		},
 		"Material Request Item": {

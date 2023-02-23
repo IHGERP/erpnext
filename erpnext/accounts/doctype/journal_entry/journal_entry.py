@@ -56,6 +56,7 @@ class JournalEntry(AccountsController):
 		# Do not validate while importing via data import
 		if not frappe.flags.in_import:
 			self.validate_total_debit_and_credit()
+			#pass
 
 		if not frappe.flags.is_reverse_depr_entry:
 			self.validate_against_jv()
@@ -486,6 +487,7 @@ class JournalEntry(AccountsController):
 		if self.difference:
 			frappe.throw(_("Total Debit must be equal to Total Credit. The difference is {0}")
 				.format(self.difference))
+
 
 	def set_total_debit_credit(self):
 		self.total_debit, self.total_credit, self.difference = 0, 0, 0

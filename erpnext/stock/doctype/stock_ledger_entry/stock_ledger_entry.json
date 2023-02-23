@@ -36,7 +36,8 @@
   "fiscal_year",
   "serial_no",
   "is_cancelled",
-  "to_rename"
+  "to_rename",
+  "amended_from"
  ],
  "fields": [
   {
@@ -197,6 +198,7 @@
    "width": "150px"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "valuation_rate",
    "fieldtype": "Currency",
    "label": "Valuation Rate",
@@ -204,7 +206,6 @@
    "oldfieldtype": "Currency",
    "options": "Company:company:default_currency",
    "print_width": "150px",
-   "read_only": 1,
    "width": "150px"
   },
   {
@@ -309,6 +310,15 @@
    "label": "Recalculate Incoming/Outgoing Rate",
    "no_copy": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Stock Ledger Entry",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "hide_toolbar": 1,
@@ -317,7 +327,7 @@
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-10-08 13:44:51.857631",
+ "modified": "2022-12-15 17:05:50.328716",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock Ledger Entry",
@@ -335,6 +345,15 @@
    "read": 1,
    "report": 1,
    "role": "Accounts Manager"
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1
   }
  ],
  "sort_field": "modified",

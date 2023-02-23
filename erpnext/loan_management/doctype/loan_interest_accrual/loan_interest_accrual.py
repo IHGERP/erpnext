@@ -26,14 +26,15 @@ class LoanInterestAccrual(AccountsController):
 			self.last_accrual_date = get_last_accrual_date(self.loan)
 
 	def on_submit(self):
-		self.make_gl_entries()
+		#self.make_gl_entries()
+		pass
 
 	def on_cancel(self):
 		if self.repayment_schedule_name:
 			self.update_is_accrued()
 
-		self.make_gl_entries(cancel=1)
-		self.ignore_linked_doctypes = ['GL Entry']
+		#self.make_gl_entries(cancel=1)
+		#self.ignore_linked_doctypes = ['GL Entry']
 
 	def update_is_accrued(self):
 		frappe.db.set_value('Repayment Schedule', self.repayment_schedule_name, 'is_accrued', 0)

@@ -297,6 +297,144 @@ class PayrollEntry(Document):
 
 		return jv_name
 
+
+	def make_emp_accrual_jv_entry(self):
+		self.check_permission("write")
+		earnings = self.get_salary_component_total(component_type = "earnings") or {}
+		deductions = self.get_salary_component_total(component_type = "deductions") or {}
+		payroll_payable_account = self.payroll_payable_account
+		jv_name = ""
+		precision = frappe.get_precision("Journal Entry Account", "debit_in_account_currency")
+		total_debit = 0
+		total_credit = 0
+
+		if earnings or deductions:
+			journal_entry = frappe.new_doc("Journal Entry")
+			journal_entry.voucher_type = "Journal Entry"
+			journal_entry.user_remark = _("Accrual Journal Entry for salaries from {0} to {1}")\
+				.format(self.start_date, self.end_date)
+			journal_entry.company = self.company
+			journal_entry.posting_date = self.posting_date
+			accounting_dimensions = get_accounting_dimensions() or []
+
+			accounts = []
+			currencies = []
+			payable_amount = 0
+			multi_currency = 0
+			company_currency = erpnext.get_company_currency(self.company)
+
+			# Earnings
+			for acc_cc, amount in earnings.items():
+				exchange_rate, amt = self.get_amount_and_exchange_rate_for_journal_entry(acc_cc[0], amount, company_currency, currencies)
+				payable_amount += flt(amount, precision)
+				accounts.append(self.update_accounting_dimensions({
+					"account": acc_cc[0],
+					"debit_in_account_currency": flt(amt, precision),
+					"exchange_rate": flt(exchange_rate),
+					"cost_center": self.cost_center,
+					"project": self.project
+				}, accounting_dimensions))
+				total_debit += flt(amt, precision)
+
+			# Deductions
+			for acc_cc, amount in deductions.items():
+				exchange_rate, amt = self.get_amount_and_exchange_rate_for_journal_entry(acc_cc[0], amount, company_currency, currencies)
+				payable_amount -= flt(amount, precision)
+				accounts.append(self.update_accounting_dimensions({
+					"account": acc_cc[0],
+					"credit_in_account_currency": flt(amt, precision),
+					"exchange_rate": flt(exchange_rate),
+					"cost_center": self.cost_center,
+					"project": self.project
+				}, accounting_dimensions))
+				total_credit += flt(amt, precision)
+
+			# Payable amount
+			
+			args = frappe._dict({
+			"salary_slip_based_on_timesheet": self.salary_slip_based_on_timesheet,
+			"payroll_frequency": self.payroll_frequency,
+			"start_date": self.start_date,
+			"end_date": self.end_date,
+			"company": self.company,
+			"posting_date": self.posting_date,
+			"deduct_tax_for_unclaimed_employee_benefits": self.deduct_tax_for_unclaimed_employee_benefits,
+			"deduct_tax_for_unsubmitted_tax_exemption_proof": self.deduct_tax_for_unsubmitted_tax_exemption_proof,
+			"payroll_entry": self.name,
+			"exchange_rate": self.exchange_rate,
+			"currency": self.currency
+			})
+			for item in self.employees:
+				ss = frappe.get_doc("Salary Slip", {"employee":item.employee, "payroll_entry":self.name})
+				net_pay = 0
+				l_total_amt = 0 
+				loan_ledger = ""
+				for l_amt in ss.loans:
+					l_total_amt += l_amt.total_payment
+					loan_ledger = l_amt.loan_account
+
+				for comp in ss.earnings:
+					comp_doc = frappe.get_doc("Salary Component", comp.salary_component)
+					if comp_doc.create_liability:
+						comp_ledger = ""
+						for comp_acc in comp_doc.accounts:
+							if comp_acc.company == self.company:
+								comp_ledger = comp_acc.payable_account
+						accounts.append(self.update_accounting_dimensions({
+						"account": comp_ledger,
+						"party_type": "Employee",
+						"party":ss.employee,
+						"credit_in_account_currency":comp.amount,
+						"exchange_rate": flt(exchange_rate),
+						"cost_center": self.cost_center
+						}, accounting_dimensions))
+						total_credit += comp.amount
+				accounts.append(self.update_accounting_dimensions({
+				"account": payroll_payable_account,
+				"party_type": "Employee",
+				"party": ss.employee,
+				"credit_in_account_currency":ss.net_pay,
+				"exchange_rate": flt(exchange_rate),
+				"cost_center": self.cost_center
+				}, accounting_dimensions))
+				total_credit += comp.amount
+				if l_total_amt != 0:
+					accounts.append(self.update_accounting_dimensions({
+					"account": loan_ledger,
+					#"party_type": "Employee",
+					#"party": ss.employee,
+					"credit_in_account_currency":l_total_amt,
+					"exchange_rate": flt(exchange_rate),
+					"cost_center": self.cost_center
+					}, accounting_dimensions))		
+					total_credit += l_total_amt
+
+
+
+
+			
+				frappe.errprint(ss.employee)
+				frappe.errprint(total_debit)
+				frappe.errprint(total_credit)
+			journal_entry.set("accounts", accounts)
+			if len(currencies) > 1:
+				multi_currency = 1
+			journal_entry.multi_currency = multi_currency
+			journal_entry.title = payroll_payable_account
+			journal_entry.save()
+
+
+			#try:
+			#	journal_entry.submit()
+			#	jv_name = journal_entry.name
+			#	self.update_salary_slip_status(jv_name = jv_name)
+			#except Exception as e:
+			#	if type(e) in (str, list, tuple):
+			#		frappe.msgprint(e)
+			#	raise
+
+		return jv_name		
+
 	def update_accounting_dimensions(self, row, accounting_dimensions):
 		for dimension in accounting_dimensions:
 			row.update({dimension: self.get(dimension)})
@@ -350,24 +488,23 @@ class PayrollEntry(Document):
 		currencies = []
 		multi_currency = 0
 		company_currency = erpnext.get_company_currency(self.company)
-		accounting_dimensions = get_accounting_dimensions() or []
 
 		exchange_rate, amount = self.get_amount_and_exchange_rate_for_journal_entry(self.payment_account, je_payment_amount, company_currency, currencies)
-		accounts.append(self.update_accounting_dimensions({
+		accounts.append({
 			"account": self.payment_account,
 			"bank_account": self.bank_account,
 			"credit_in_account_currency": flt(amount, precision),
 			"exchange_rate": flt(exchange_rate),
-		}, accounting_dimensions))
+		})
 
 		exchange_rate, amount = self.get_amount_and_exchange_rate_for_journal_entry(payroll_payable_account, je_payment_amount, company_currency, currencies)
-		accounts.append(self.update_accounting_dimensions({
+		accounts.append({
 			"account": payroll_payable_account,
 			"debit_in_account_currency": flt(amount, precision),
 			"exchange_rate": flt(exchange_rate),
 			"reference_type": self.doctype,
 			"reference_name": self.name
-		}, accounting_dimensions))
+		})
 
 		if len(currencies) > 1:
 				multi_currency = 1
@@ -642,7 +779,8 @@ def submit_salary_slips_for_employees(payroll_entry, salary_slips, publish_progr
 		if publish_progress:
 			frappe.publish_progress(count*100/len(salary_slips), title = _("Submitting Salary Slips..."))
 	if submitted_ss:
-		payroll_entry.make_accrual_jv_entry()
+		#payroll_entry.make_accrual_jv_entry()
+		payroll_entry.make_emp_accrual_jv_entry()
 		frappe.msgprint(_("Salary Slip submitted for period from {0} to {1}")
 			.format(ss_obj.start_date, ss_obj.end_date))
 

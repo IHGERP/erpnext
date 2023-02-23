@@ -190,8 +190,7 @@
    "fieldname": "costing_rate",
    "fieldtype": "Currency",
    "label": "Costing Rate",
-   "options": "currency",
-   "permlevel": 1
+   "options": "currency"
   },
   {
    "allow_on_submit": 1,
@@ -267,7 +266,7 @@
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-05-18 12:19:33.205940",
+ "modified": "2022-08-06 12:10:24.592400",
  "modified_by": "Administrator",
  "module": "Projects",
  "name": "Timesheet Detail",

@@ -1,0 +1,37 @@
+{
+ "based_on": "",
+ "chart_name": "Late Coming Employees",
+ "chart_type": "Report",
+ "creation": "2022-03-19 18:10:57.900092",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"checkin_date\":\"2022-03-19\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2022-03-19 18:10:57.900092",
+ "modified_by": "it@ledworld.ae",
+ "module": "HR",
+ "name": "Late Coming Employees",
+ "number_of_groups": 0,
+ "owner": "it@ledworld.ae",
+ "parent_document_type": "",
+ "report_name": "All Late",
+ "source": "",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "x_field": "checkin_time",
+ "y_axis": [
+  {
+   "color": "#1037e3",
+   "y_field": "late"
+  }
+ ]
+}

@@ -9,7 +9,7 @@
  "is_standard": 1,
  "label": "Applicants With Unpaid Shortfall",
  "method": "erpnext.loan_management.doctype.loan.loan.get_shortfall_applicants",
- "modified": "2021-02-07 21:46:27.369795",
+ "modified": "2022-04-12 12:44:25.935013",
  "modified_by": "Administrator",
  "module": "Loan Management",
  "name": "Applicants With Unpaid Shortfall",

@@ -111,6 +111,7 @@ def get_report_pdf(doc, consolidated=True):
 	else:
 		for customer, statement_html in statement_dict.items():
 			statement_dict[customer]=get_pdf(statement_html, {'orientation': doc.orientation})
+		frappe.errprint(statement_dict)
 		return statement_dict
 
 def get_customers_based_on_territory_or_customer_group(customer_collection, collection_name):

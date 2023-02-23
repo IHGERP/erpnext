@@ -9,8 +9,8 @@
  "idx": 0,
  "is_public": 1,
  "is_standard": 1,
- "last_synced_on": "2020-07-22 12:19:59.879476",
- "modified": "2020-07-22 12:21:48.780513",
+ "last_synced_on": "2022-07-28 17:46:03.719517",
+ "modified": "2022-07-28 17:46:48.565872",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Bank Balance",
@@ -20,7 +20,7 @@
  "time_interval": "Quarterly",
  "timeseries": 0,
  "timespan": "Last Year",
- "type": "Line",
+ "type": "Bar",
  "use_report_chart": 0,
  "y_axis": []
 }

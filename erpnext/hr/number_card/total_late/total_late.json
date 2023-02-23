@@ -1,0 +1,22 @@
+{
+ "creation": "2022-01-24 19:09:50.277321",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_json": "{\"company\":\"LED WORLD LLC\",\"checkin_date\":\"2022-01-24\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "TOTAL LATE",
+ "modified": "2022-01-24 19:11:57.784351",
+ "modified_by": "tech@inspiredholding.com",
+ "module": "HR",
+ "name": "TOTAL LATE",
+ "owner": "tech@inspiredholding.com",
+ "report_field": "late_min",
+ "report_function": "Sum",
+ "report_name": "Late Checkin Report",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

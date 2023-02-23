@@ -1,0 +1,22 @@
+{
+ "creation": "2022-04-07 15:47:55.199308",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_json": "{\"from_date\":\"2022-03-01\",\"to_date\":\"2022-03-31\",\"currency\":\"AED\",\"company\":\"IHG INDUSTRY LLC\",\"docstatus\":\"Draft\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "IHG INDUSTRY - NET PAY",
+ "modified": "2022-04-07 15:47:55.225728",
+ "modified_by": "tech@inspiredholding.com",
+ "module": "HR",
+ "name": "IHG INDUSTRY - NET PAY",
+ "owner": "tech@inspiredholding.com",
+ "report_field": "total_deduction",
+ "report_function": "Sum",
+ "report_name": "Salary Register",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

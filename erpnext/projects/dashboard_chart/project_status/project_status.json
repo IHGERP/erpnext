@@ -1,0 +1,47 @@
+{
+ "based_on": "",
+ "chart_name": "Project Status",
+ "chart_type": "Group By",
+ "creation": "2022-08-09 23:48:56.726886",
+ "custom_options": "",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "Project",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"Project\",\"status\",\"!=\",\"Cancelled\",false]]",
+ "group_by_based_on": "status",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2022-08-11 13:18:05.519217",
+ "modified_by": "Administrator",
+ "module": "Projects",
+ "name": "Project Status",
+ "number_of_groups": 2,
+ "owner": "Administrator",
+ "parent_document_type": "",
+ "report_name": "Project Summary",
+ "source": "",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Pie",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "x_field": "name",
+ "y_axis": [
+  {
+   "color": "#761ACB",
+   "y_field": "total_tasks"
+  },
+  {
+   "color": "#29CD42",
+   "y_field": "completed_tasks"
+  },
+  {
+   "color": "#ED6396",
+   "y_field": "overdue_tasks"
+  }
+ ]
+}

@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
+ "allow_rename": 1,
  "autoname": "naming_series:",
  "creation": "2013-05-24 19:29:05",
  "doctype": "DocType",
@@ -231,6 +232,7 @@
    "set_only_once": 1
   },
   {
+   "allow_on_submit": 1,
    "bold": 1,
    "fieldname": "customer",
    "fieldtype": "Link",
@@ -681,7 +683,7 @@
    "options": "fa fa-shopping-cart"
   },
   {
-   "default": "0",
+   "default": "1",
    "fieldname": "update_stock",
    "fieldtype": "Check",
    "hide_days": 1,
@@ -2038,12 +2040,11 @@
    "link_fieldname": "consolidated_invoice"
   }
  ],
- "modified": "2021-10-21 20:19:38.667508",
+ "modified": "2022-11-30 18:54:51.874485",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice",
  "name_case": "Title Case",
- "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

@@ -1,0 +1,22 @@
+{
+ "creation": "2022-04-07 15:45:04.121714",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_json": "{\"from_date\":\"2022-03-01\",\"to_date\":\"2022-03-31\",\"currency\":\"AED\",\"company\":\"LED WORLD LLC\",\"docstatus\":\"Draft\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "LEDWORLD-NET PAY",
+ "modified": "2022-04-07 15:45:04.177967",
+ "modified_by": "tech@inspiredholding.com",
+ "module": "HR",
+ "name": "LEDWORLD-NET PAY",
+ "owner": "tech@inspiredholding.com",
+ "report_field": "net_pay",
+ "report_function": "Sum",
+ "report_name": "Salary Register",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

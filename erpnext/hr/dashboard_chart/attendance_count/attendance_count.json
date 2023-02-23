@@ -11,7 +11,7 @@
  "idx": 0,
  "is_public": 1,
  "is_standard": 1,
- "modified": "2020-07-22 14:32:40.334424",
+ "modified": "2022-02-26 22:05:15.537250",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance Count",
@@ -21,7 +21,7 @@
  "time_interval": "Yearly",
  "timeseries": 0,
  "timespan": "Last Year",
- "type": "Line",
+ "type": "Bar",
  "use_report_chart": 1,
  "y_axis": []
 }

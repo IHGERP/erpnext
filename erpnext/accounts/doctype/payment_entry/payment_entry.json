@@ -303,8 +303,7 @@
    "fieldname": "source_exchange_rate",
    "fieldtype": "Float",
    "label": "Exchange Rate",
-   "print_hide": 1,
-   "reqd": 1
+   "print_hide": 1
   },
   {
    "fieldname": "base_paid_amount",
@@ -332,8 +331,7 @@
    "fieldname": "target_exchange_rate",
    "fieldtype": "Float",
    "label": "Exchange Rate",
-   "print_hide": 1,
-   "reqd": 1
+   "print_hide": 1
   },
   {
    "depends_on": "doc.received_amount",
@@ -720,11 +718,10 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-11-24 18:58:24.919764",
+ "modified": "2022-06-08 18:14:32.642024",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Entry",
- "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {

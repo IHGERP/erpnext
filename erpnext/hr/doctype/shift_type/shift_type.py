@@ -123,8 +123,8 @@ def get_filtered_date_list(employee, start_date, end_date, filter_attendance=Tru
 	if holiday_list:
 		condition_query += """ and a.selected_date not in (
 			select holiday_date from `tabHoliday` where parenttype = 'Holiday List' and
-    		parentfield = 'holidays' and parent = %(holiday_list)s
-    		and holiday_date between %(start_date)s and %(end_date)s)"""
+			parentfield = 'holidays' and parent = %(holiday_list)s
+			and holiday_date between %(start_date)s and %(end_date)s)"""
 
 	dates = frappe.db.sql("""select * from
 		({base_dates_query}) as a

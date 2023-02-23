@@ -104,7 +104,7 @@ class Item(Document):
 		self.check_for_active_boms()
 		self.fill_customer_code()
 		self.check_item_tax()
-		self.validate_barcode()
+		#self.validate_barcode()
 		self.validate_warehouse_for_reorder()
 		self.update_bom_item_desc()
 		self.synced_with_hub = 0
@@ -133,7 +133,7 @@ class Item(Document):
 		invalidate_cache_for_item(self)
 		self.update_variants()
 		self.update_item_price()
-		self.update_website_item()
+		#self.update_website_item()
 
 	def validate_description(self):
 		'''Clean HTML description if set'''
@@ -1026,7 +1026,7 @@ def get_item_attribute(parent, attribute_value=""):
 	if not frappe.has_permission("Item"):
 		frappe.throw(_("No Permission"))
 
-	return frappe.get_all("Item Attribute Value", fields = ["attribute_value"],
+	return frappe.get_all("Item Attribute Value", fields = ["attribute_value", "dependent_attribute", "value"],
 		filters = {'parent': parent, 'attribute_value': ("like", f"%{attribute_value}%")})
 
 def update_variants(variants, template, publish_progress=True):

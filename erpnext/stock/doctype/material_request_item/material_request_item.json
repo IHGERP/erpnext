@@ -10,6 +10,7 @@
   "item_code",
   "item_name",
   "col_break1",
+  "eta",
   "schedule_date",
   "section_break_4",
   "description",
@@ -27,12 +28,12 @@
   "conversion_factor",
   "stock_qty",
   "qty_info_sec_break",
+  "data_21",
   "min_order_qty",
   "projected_qty",
   "qty_info_col_break",
   "actual_qty",
   "ordered_qty",
-  "received_qty",
   "rate_and_amount_section_break",
   "rate",
   "col_break3",
@@ -56,7 +57,8 @@
   "col_break4",
   "expense_account",
   "section_break_46",
-  "page_break"
+  "page_break",
+  "remarks"
  ],
  "fields": [
   {
@@ -80,6 +82,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "item_name",
    "fieldtype": "Data",
    "in_global_search": 1,
@@ -98,6 +101,7 @@
    "label": "Description"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "description",
    "fieldtype": "Text Editor",
    "label": "Description",
@@ -108,11 +112,12 @@
    "width": "250px"
   },
   {
+   "allow_on_submit": 1,
+   "fetch_from": "item_code.image",
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "label": "Image",
-   "print_hide": 1,
-   "read_only": 1
+   "print_hide": 1
   },
   {
    "fieldname": "quantity_and_warehouse",
@@ -132,6 +137,7 @@
    "width": "80px"
   },
   {
+   "allow_on_submit": 1,
    "columns": 1,
    "fieldname": "uom",
    "fieldtype": "Link",
@@ -145,6 +151,7 @@
    "width": "70px"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "conversion_factor",
    "fieldtype": "Float",
    "label": "UOM Conversion Factor",
@@ -161,6 +168,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "columns": 3,
    "fieldname": "warehouse",
    "fieldtype": "Link",
@@ -190,19 +198,23 @@
    "width": "100px"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "rate",
    "fieldtype": "Currency",
    "label": "Rate",
    "print_hide": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "amount",
    "fieldtype": "Currency",
    "label": "Amount",
+   "permlevel": 1,
    "print_hide": 1,
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "stock_qty",
    "fieldtype": "Float",
    "label": "Stock Qty",
@@ -228,6 +240,7 @@
    "search_index": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "brand",
    "fieldtype": "Link",
    "label": "Brand",
@@ -320,6 +333,7 @@
    "width": "70px"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "actual_qty",
    "fieldtype": "Float",
    "label": "Actual Qty",
@@ -365,15 +379,6 @@
    "print_hide": 1
   },
   {
-   "depends_on": "eval:doc.docstatus==1",
-   "fieldname": "received_qty",
-   "fieldtype": "Float",
-   "label": "Received Qty",
-   "no_copy": 1,
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
    "collapsible": 1,
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
@@ -415,6 +420,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "depends_on": "eval:parent.material_request_type == \"Material Transfer\"",
    "fieldname": "from_warehouse",
    "fieldtype": "Link",
@@ -450,20 +456,34 @@
    "fieldname": "job_card_item",
    "fieldtype": "Data",
    "hidden": 1,
+   "label": "Job Card Item",
    "no_copy": 1,
-   "print_hide": 1,
-   "label": "Job Card Item"
+   "print_hide": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Long Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "data_21",
+   "fieldtype": "Data"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "eta",
+   "fieldtype": "Date",
+   "label": "ETA"
   }
  ],
  "idx": 1,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-11-03 14:40:24.409826",
+ "modified": "2022-08-06 17:18:51.898513",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Material Request Item",
- "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

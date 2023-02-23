@@ -1,0 +1,22 @@
+{
+ "creation": "2022-04-26 17:32:36.008210",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_json": "{\"from_date\":\"2022-03-01\",\"to_date\":\"2022-03-31\",\"currency\":\"AED\",\"company\":\"LED WORLD LLC\",\"docstatus\":\"Submitted\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Overtime - Pay",
+ "modified": "2022-04-26 17:32:36.209296",
+ "modified_by": "tech@inspiredholding.com",
+ "module": "HR",
+ "name": "Overtime - Pay",
+ "owner": "tech@inspiredholding.com",
+ "report_field": "overtime_bonus",
+ "report_function": "Sum",
+ "report_name": "Salary Register",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

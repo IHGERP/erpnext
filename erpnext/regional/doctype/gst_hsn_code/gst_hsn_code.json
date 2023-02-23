@@ -1,4 +1,5 @@
 {
+ "actions": [],
  "autoname": "field:hsn_code",
  "creation": "2017-06-21 10:48:56.422086",
  "doctype": "DocType",
@@ -31,12 +32,26 @@
    "options": "Item Tax"
   }
  ],
- "modified": "2019-11-01 11:18:59.556931",
+ "links": [],
+ "modified": "2022-09-12 13:48:41.807607",
  "modified_by": "Administrator",
  "module": "Regional",
  "name": "GST HSN Code",
  "owner": "Administrator",
- "permissions": [],
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
  "quick_entry": 1,
  "search_fields": "hsn_code, description",
  "sort_field": "modified",

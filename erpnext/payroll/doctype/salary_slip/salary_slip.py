@@ -2,8 +2,12 @@
 # License: GNU General Public License v3. See license.txt
 
 
+from ctypes.wintypes import FLOAT
 import datetime
+from itertools import count
 import math
+from datetime import timedelta
+from erpnext.hr.doctype.employee.employee import get_holiday_list_for_employee
 
 import frappe
 from frappe import _, msgprint
@@ -204,6 +208,91 @@ class SalarySlip(TransactionBase):
 			#getin leave details
 			self.get_working_days_details(joining_date, relieving_date)
 			struct = self.check_sal_struct(joining_date, relieving_date)
+			
+			#--------------------- #custom code --------------#
+
+			self.total_employed_days = date_diff(self.end_date, joining_date)
+			#----------------OT Code---------------------------#
+			holidays = self.get_holidays_for_employee(self.start_date, self.end_date)
+			#holidays = get_holiday_dates_for_employee(self.employee, self.start_date, self.end_date)
+			#frappe.errprint(holidays)
+			#frappe.errprint(self.employee)
+			self.total_working_hours_this_month = 0
+			self.total_worked_hours = 0
+			s_working_hours = 0
+			if not self.total_ot:
+				self.total_ot = 0
+			if not self.missed_hours:
+				self.missed_hours = 0
+
+		
+
+			ot_list = frappe.get_all("Attendance", filters = {
+						"attendance_date": ["between", [self.start_date, self.end_date]],
+						"employee": self.employee,
+						"docstatus": 1,
+						"status": ["in", ["Present", "Half Day"]]
+					}, fields = ["ot", "total_missed_hours"])
+
+			
+		
+
+			#split(".")[0]
+			#attendance.working_hours = time_diff_in_hours(in_t, out_t)
+
+			self.total_ot = 0
+			self.missed_hours = 0
+			for x in ot_list:
+				if x.ot:
+					self.total_ot += x.ot
+				if x.total_missed_hours:
+					self.missed_hours += x.total_missed_hours
+			#frappe.errprint(self.total_ot)        
+			#s_working_hours = ot_list[0].total_working_hours
+			#self.total_working_hours_this_month = (s_working_hours * self.total_working_days) - (s_working_hours * len(holidays))
+			 				
+
+
+			
+
+
+
+			#---------------Holiday OT -----------------------#
+			
+			#frappe.errprint(holidays)
+			h_ot = 0
+			for x in holidays:
+				#frappe.errprint(x)
+				if frappe.get_all('Employee Checkin', filters={
+												'employee': self.employee,
+												'date_qcs': ['=', x],
+												'skip_auto_attendance': 0
+											},
+											fields=['time', 'employee', 'name'],
+											order_by='time'
+											):
+					
+					employee_checkin_list = frappe.get_all('Employee Checkin', filters={
+												'employee': self.employee,
+												'date_qcs': ['=', x],
+												'skip_auto_attendance': 0
+											},
+											fields=['time', 'employee', 'name'],
+											order_by='time'
+											)
+					s_time = employee_checkin_list[0]['time']
+					e_time = employee_checkin_list[len(employee_checkin_list)-1]['time']
+					h_ot += (e_time - s_time) / datetime.timedelta(hours=1)
+			self.holiday_ot = flt(h_ot,2)
+			#frappe.errprint(h_ot)
+
+			#----------------Late hours----------------------#
+
+			
+
+
+
+			#--------end code -------------------------------#
 
 			if struct:
 				self._salary_structure_doc = frappe.get_doc('Salary Structure', struct)
@@ -212,7 +301,13 @@ class SalarySlip(TransactionBase):
 				self.pull_sal_struct()
 				ps = frappe.db.get_value("Payroll Settings", None, ["payroll_based_on","consider_unmarked_attendance_as"], as_dict=1)
 				return [ps.payroll_based_on, ps.consider_unmarked_attendance_as]
-
+			
+	def time_diff_in_hours(start, end):
+		return round((end-start).total_seconds() / 3600, 1)
+	
+	
+	
+	
 	def set_time_sheet(self):
 		if self.salary_slip_based_on_timesheet:
 			self.set("timesheets", [])
@@ -275,6 +370,7 @@ class SalarySlip(TransactionBase):
 			return
 
 		holidays = self.get_holidays_for_employee(self.start_date, self.end_date)
+		#frappe.errprint(holidays)
 
 		if not cint(include_holidays_in_total_working_days):
 			working_days -= len(holidays)
@@ -286,6 +382,7 @@ class SalarySlip(TransactionBase):
 
 		if payroll_based_on == "Attendance":
 			actual_lwp, absent = self.calculate_lwp_ppl_and_absent_days_based_on_attendance(holidays)
+			#frappe.errprint("original abs:" + str(absent))
 			self.absent_days = absent
 		else:
 			actual_lwp = self.calculate_lwp_or_ppl_based_on_leave_application(holidays, working_days)
@@ -298,37 +395,85 @@ class SalarySlip(TransactionBase):
 
 		self.leave_without_pay = lwp
 		self.total_working_days = working_days
-
+		frappe.errprint("absent:" + str(self.absent_days))
+		frappe.errprint("lwp:" + str(self.leave_without_pay))
 		payment_days = self.get_payment_days(joining_date,
 			relieving_date, include_holidays_in_total_working_days)
-
-		if flt(payment_days) > flt(lwp):
+		frappe.errprint("payment:1" + str(self.payment_days))
+		if flt(payment_days) != flt(lwp):
 			self.payment_days = flt(payment_days) - flt(lwp)
-
+			frappe.errprint("payment:2" + str(self.payment_days))
 			if payroll_based_on == "Attendance":
 				self.payment_days -= flt(absent)
-
+				self.payment_days = self.payment_days
+				frappe.errprint("payment3:" + str(self.payment_days))
+# there is an issue here with unmarked days, absent and payment days, need to find a solution.
 			unmarked_days = self.get_unmarked_days()
 			consider_unmarked_attendance_as = frappe.db.get_value("Payroll Settings", None, "consider_unmarked_attendance_as") or "Present"
-
+			frappe.errprint("unmarked:" + str(unmarked_days))
 			if payroll_based_on == "Attendance" and consider_unmarked_attendance_as =="Absent":
-				self.absent_days += unmarked_days #will be treated as absent
-				self.payment_days -= unmarked_days
-				if include_holidays_in_total_working_days:
-					for holiday in holidays:
-						if not frappe.db.exists("Attendance", {"employee": self.employee, "attendance_date": holiday, "docstatus": 1 }):
-							self.payment_days += 1
+				#self.absent_days += unmarked_days #will be treated as absent
+				#if unmarked_days < self.payment_days:
+				if unmarked_days > len(holidays):
+					self.payment_days += (unmarked_days - len(holidays))
+				pass
+				#frappe.errprint("payment4:" + str(self.payment_days))
+				#if include_holidays_in_total_working_days:
+				#	for holiday in holidays:
+				#		#frappe.errprint(holiday)
+				#		if datetime.datetime.strptime(holiday, "%Y-%m-%d").date() > datetime.datetime.strptime(str(self.joining_date), "%Y-%m-%d").date():
+				#			#if not frappe.db.exists("Attendance", {"employee": self.employee, "attendance_date": holiday, "docstatus": 1 }):
+				#			if unmarked_days < len(holidays):
+				#				self.payment_days += (len(holidays) - unmarked_days)
+				#				pass
+				frappe.errprint(self.payment_days)
+				#	self.payment_days = abs(self.payment_days)
 		else:
 			self.payment_days = 0
 
 	def get_unmarked_days(self):
-		marked_days = frappe.get_all("Attendance", filters = {
-					"attendance_date": ["between", [self.start_date, self.end_date]],
-					"employee": self.employee,
-					"docstatus": 1
-				}, fields = ["COUNT(*) as marked_days"])[0].marked_days
+		
+		holiday_marked = 0
+		qcs_start_date = str(self.start_date)
+		if datetime.datetime.strptime(qcs_start_date, "%Y-%m-%d").date()  > datetime.datetime.strptime(str(self.joining_date), "%Y-%m-%d").date():
+			holidays = self.get_holidays_for_employee(self.start_date, self.end_date)
+			holiday_count = len(holidays)
+			marked_days = frappe.get_all("Attendance", filters = {
+						"attendance_date": ["between", [self.start_date, self.end_date]],
+						"employee": self.employee,
+						"docstatus": 1
+					}, fields = ["COUNT(*) as marked_days"])[0].marked_days
+			holiday_marked = frappe.get_all("Attendance", filters = {
+						"attendance_date": ["in", holidays],
+						"employee": self.employee,
+						"docstatus": 1
+					}, fields = ["COUNT(*) as holiday_marked"])[0].holiday_marked
+		else:
+			holidays = self.get_holidays_for_employee(self.joining_date, self.end_date)
+			holiday_count = len(holidays)
+			marked_days = frappe.get_all("Attendance", filters = {
+						"attendance_date": ["between", [self.joining_date, self.end_date]],
+						"employee": self.employee,
+						"docstatus": 1
+					}, fields = ["COUNT(*) as marked_days"])[0].marked_days
+			holiday_marked = frappe.get_all("Attendance", filters = {
+						"attendance_date": ["in", holidays],
 
-		return self.total_working_days - marked_days
+						"employee": self.employee,
+						"docstatus": 1
+					}, fields = ["COUNT(*) as holiday_marked"])[0].holiday_marked
+
+		#frappe.errprint("marked days: " + str(marked_days))
+		#frappe.errprint("marked holi: " + str(holiday_marked))
+		#frappe.errprint("holi count: " + str(holiday_count))
+		if datetime.datetime.strptime(qcs_start_date, "%Y-%m-%d").date()  < datetime.datetime.strptime(str(self.joining_date), "%Y-%m-%d").date():
+			working_days = date_diff(self.end_date, self.joining_date) + 1
+		else:
+			working_days = date_diff(self.end_date, self.start_date) + 1
+		#frappe.errprint("working days" + str(working_days))
+		#frappe.errprint("original unmarked:" + str(working_days - marked_days))
+		return working_days - marked_days
+		return working_days - marked_days
 
 
 	def get_payment_days(self, joining_date, relieving_date, include_holidays_in_total_working_days):
@@ -350,13 +495,15 @@ class SalarySlip(TransactionBase):
 			elif relieving_date < getdate(self.start_date):
 				frappe.throw(_("Employee relieved on {0} must be set as 'Left'")
 					.format(relieving_date))
-
+		# +1
 		payment_days = date_diff(end_date, start_date) + 1
 
-		if not cint(include_holidays_in_total_working_days):
-			holidays = self.get_holidays_for_employee(start_date, end_date)
-			payment_days -= len(holidays)
-
+		#if not cint(include_holidays_in_total_working_days):
+		#frappe.errprint("orig Payment Days" + str(payment_days))
+		holidays = self.get_holidays_for_employee(start_date, end_date)
+		#payment_days -= len(holidays)
+		#frappe.errprint("Original startdate: " + str(start_date))
+		frappe.errprint("holi Payment Days" + str(payment_days))
 		return payment_days
 
 	def get_holidays_for_employee(self, start_date, end_date):
@@ -1106,12 +1253,11 @@ class SalarySlip(TransactionBase):
 		self.total_loan_repayment = 0
 		self.total_interest_amount = 0
 		self.total_principal_amount = 0
-
+		#frappe.errprint("set value")
 		if not self.get('loans'):
 			for loan in self.get_loan_details():
-
+				#frappe.errprint(loan)
 				amounts = calculate_amounts(loan.name, self.posting_date, "Regular Payment")
-
 				if amounts['interest_amount'] or amounts['payable_principal_amount']:
 					self.append('loans', {
 						'loan': loan.name,
@@ -1136,6 +1282,7 @@ class SalarySlip(TransactionBase):
 			self.total_loan_repayment += payment.total_payment
 
 	def get_loan_details(self):
+		#frappe.errprint("check loan")
 		return frappe.get_all("Loan",
 			fields=["name", "interest_income_account", "loan_account", "loan_type"],
 			filters = {

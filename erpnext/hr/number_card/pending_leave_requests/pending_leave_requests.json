@@ -1,0 +1,23 @@
+{
+ "aggregate_function_based_on": "",
+ "creation": "2022-01-21 15:26:40.488664",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Leave Application",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"Leave Application\",\"workflow_state\",\"in\",[\"Pending Dept Approval\",\"Pending HR Approval\"],false]]",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Pending Leave Requests",
+ "modified": "2022-08-13 15:00:11.924378",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Pending Leave Requests",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Document Type"
+}

@@ -4,16 +4,18 @@
 		{%= filters.party_name %}
 	{% } else if (filters.party && filters.party.length) { %}
 		{%= filters.party %}
-	{% } else if (filters.account) { %}
-		{%= filters.account %}
+<!--	{% } else if (filters.account) { %}
+		{%= filters.account %} -->
 	{% } %}
 </h4>
 
+<!--
 <h6 class="text-center">
 	{% if (filters.tax_id) { %}
 	{%= __("Tax Id: ")%}	{%= filters.tax_id %}
 	{% } %}
 </h6>
+-->
 
 <h5 class="text-center">
 	{%= frappe.datetime.str_to_user(filters.from_date) %}
@@ -26,10 +28,11 @@
 		<tr>
 			<th style="width: 12%">{%= __("Date") %}</th>
 			<th style="width: 15%">{%= __("Ref") %}</th>
-			<th style="width: 25%">{%= __("Party") %}</th>
+			<th style="width: 25%">{%= __("Remarks") %}</th>
 			<th style="width: 15%">{%= __("Debit") %}</th>
 			<th style="width: 15%">{%= __("Credit") %}</th>
 			<th style="width: 18%">{%= __("Balance (Dr - Cr)") %}</th>
+
 		</tr>
 	</thead>
 	<tbody>
@@ -44,9 +47,14 @@
 						{%= data[i].party || data[i].account %}
 						<br>
 					{% } %}
+					
 
-					{{ __("Against") }}: {%= data[i].against %}
-					<br>{%= __("Remarks") %}: {%= data[i].remarks %}
+					{% if(data[i].project) { %}
+					{{ __("Project") }}: {%= data[i].project %}
+						<br>
+					{% } %}	
+
+					{%= __("Remarks") %}: {%= data[i].remarks %}
 					{% if(data[i].bill_no) { %}
 						<br>{%= __("Supplier Invoice No") %}: {%= data[i].bill_no %}
 					{% } %}
