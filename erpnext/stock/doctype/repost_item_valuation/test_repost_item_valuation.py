@@ -5,7 +5,7 @@
 from unittest.mock import MagicMock, call
 
 import frappe
-from frappe.tests.utils import FrappeTestCase
+from frappe.tests.utils import FrappeTestCase, change_settings
 from frappe.utils import nowdate
 from frappe.utils.data import add_to_date, today
 
@@ -173,6 +173,7 @@ class TestRepostItemValuation(FrappeTestCase, StockTestMixin):
 
 		riv.set_status("Skipped")
 
+	@change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
 	def test_prevention_of_cancelled_transaction_riv(self):
 		frappe.flags.dont_execute_stock_reposts = True
 
@@ -272,3 +273,42 @@ class TestRepostItemValuation(FrappeTestCase, StockTestMixin):
 			[{"credit": 50, "debit": 0}],
 			gle_filters={"account": "Stock In Hand - TCP1"},
 		)
+
+	def test_account_freeze_validation(self):
+		today = nowdate()
+
+		riv = frappe.get_doc(
+			doctype="Repost Item Valuation",
+			item_code="_Test Item",
+			warehouse="_Test Warehouse - _TC",
+			based_on="Item and Warehouse",
+			posting_date=today,
+			posting_time="00:01:00",
+		)
+		riv.flags.dont_run_in_test = True  # keep it queued
+
+		accounts_settings = frappe.get_doc("Accounts Settings")
+		accounts_settings.acc_frozen_upto = today
+		accounts_settings.frozen_accounts_modifier = ""
+		accounts_settings.save()
+
+		self.assertRaises(frappe.ValidationError, riv.save)
+		accounts_settings.acc_frozen_upto = ""
+		accounts_settings.save()
+
+	@change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
+	def test_create_repost_entry_for_cancelled_document(self):
+		pr = make_purchase_receipt(
+			company="_Test Company with perpetual inventory",
+			warehouse="Stores - TCP1",
+			get_multiple_items=True,
+		)
+
+		self.assertTrue(pr.docstatus == 1)
+		self.assertFalse(frappe.db.exists("Repost Item Valuation", {"voucher_no": pr.name}))
+
+		pr.load_from_db()
+
+		pr.cancel()
+		self.assertTrue(pr.docstatus == 2)
+		self.assertTrue(frappe.db.exists("Repost Item Valuation", {"voucher_no": pr.name}))
