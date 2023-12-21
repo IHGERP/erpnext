@@ -199,8 +199,14 @@ class TestWebsiteItem(unittest.TestCase):
 
 		breadcrumbs = get_parent_item_groups(item.item_group)
 
+		settings = frappe.get_cached_doc("E Commerce Settings")
+		if settings.enable_field_filters:
+			base_breadcrumb = "Shop by Category"
+		else:
+			base_breadcrumb = "All Products"
+
 		self.assertEqual(breadcrumbs[0]["name"], "Home")
-		self.assertEqual(breadcrumbs[1]["name"], "All Products")
+		self.assertEqual(breadcrumbs[1]["name"], base_breadcrumb)
 		self.assertEqual(breadcrumbs[2]["name"], "_Test Item Group B")  # parent item group
 		self.assertEqual(breadcrumbs[3]["name"], "_Test Item Group B - 1")
 
@@ -306,7 +312,7 @@ class TestWebsiteItem(unittest.TestCase):
 		# check if stock details are fetched and item not in stock with warehouse set
 		data = get_product_info_for_website(item_code, skip_quotation_creation=True)
 		self.assertFalse(bool(data.product_info["in_stock"]))
-		self.assertEqual(data.product_info["stock_qty"][0][0], 0)
+		self.assertEqual(data.product_info["stock_qty"], 0)
 
 		# disable show stock availability
 		setup_e_commerce_settings({"show_stock_availability": 0})
@@ -349,7 +355,7 @@ class TestWebsiteItem(unittest.TestCase):
 		# check if stock details are fetched and item is in stock with warehouse set
 		data = get_product_info_for_website(item_code, skip_quotation_creation=True)
 		self.assertTrue(bool(data.product_info["in_stock"]))
-		self.assertEqual(data.product_info["stock_qty"][0][0], 2)
+		self.assertEqual(data.product_info["stock_qty"], 2)
 
 		# unset warehouse
 		frappe.db.set_value("Website Item", {"item_code": item_code}, "website_warehouse", "")
@@ -358,7 +364,7 @@ class TestWebsiteItem(unittest.TestCase):
 		# (even though it has stock in some warehouse)
 		data = get_product_info_for_website(item_code, skip_quotation_creation=True)
 		self.assertFalse(bool(data.product_info["in_stock"]))
-		self.assertFalse(bool(data.product_info["stock_qty"]))
+		self.assertFalse(data.product_info["stock_qty"])
 
 		# disable show stock availability
 		setup_e_commerce_settings({"show_stock_availability": 0})

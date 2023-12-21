@@ -249,7 +249,7 @@ class PaymentRequest(Document):
 		if (
 			party_account_currency == ref_doc.company_currency and party_account_currency != self.currency
 		):
-			party_amount = ref_doc.base_grand_total
+			party_amount = ref_doc.get("base_rounded_total") or ref_doc.get("base_grand_total")
 		else:
 			party_amount = self.grand_total
 
@@ -495,26 +495,28 @@ def get_amount(ref_doc, payment_account=None):
 	"""get amount based on doctype"""
 	dt = ref_doc.doctype
 	if dt in ["Sales Order", "Purchase Order"]:
-		grand_total = flt(ref_doc.rounded_total) - flt(ref_doc.advance_paid)
-
+		grand_total = flt(ref_doc.rounded_total) or flt(ref_doc.grand_total)
 	elif dt in ["Sales Invoice", "Purchase Invoice"]:
-		if ref_doc.party_account_currency == ref_doc.currency:
-			grand_total = flt(ref_doc.outstanding_amount)
-		else:
-			grand_total = flt(ref_doc.outstanding_amount) / ref_doc.conversion_rate
-
+		if not ref_doc.get("is_pos"):
+			if ref_doc.party_account_currency == ref_doc.currency:
+				grand_total = flt(ref_doc.outstanding_amount)
+			else:
+				grand_total = flt(ref_doc.outstanding_amount) / ref_doc.conversion_rate
+		elif dt == "Sales Invoice":
+			for pay in ref_doc.payments:
+				if pay.type == "Phone" and pay.account == payment_account:
+					grand_total = pay.amount
+					break
 	elif dt == "POS Invoice":
 		for pay in ref_doc.payments:
 			if pay.type == "Phone" and pay.account == payment_account:
 				grand_total = pay.amount
 				break
-
 	elif dt == "Fees":
 		grand_total = ref_doc.outstanding_amount
 
 	if grand_total > 0:
 		return grand_total
-
 	else:
 		frappe.throw(_("Payment Entry is already created"))
 

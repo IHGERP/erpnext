@@ -13,7 +13,7 @@ from frappe.model.mapper import map_child_doc
 from frappe.query_builder import Case
 from frappe.query_builder.custom import GROUP_CONCAT
 from frappe.query_builder.functions import Coalesce, IfNull, Locate, Replace, Sum
-from frappe.utils import cint, floor, flt, today
+from frappe.utils import ceil, cint, floor, flt, today
 from frappe.utils.nestedset import get_descendants_of
 
 from erpnext.selling.doctype.sales_order.sales_order import (
@@ -29,13 +29,14 @@ class PickList(Document):
 		self.validate_for_qty()
 
 	def before_save(self):
+		self.update_status()
 		self.set_item_locations()
 
 		# set percentage picked in SO
 		for location in self.get("locations"):
 			if (
 				location.sales_order
-				and frappe.db.get_value("Sales Order", location.sales_order, "per_picked") == 100
+				and frappe.db.get_value("Sales Order", location.sales_order, "per_picked", cache=True) == 100
 			):
 				frappe.throw(
 					_("Row #{}: item {} has been picked already.").format(location.idx, location.item_code)
@@ -89,20 +90,20 @@ class PickList(Document):
 		self.update_reference_qty()
 		self.update_sales_order_picking_status()
 
-	def update_status(self, status=None, update_modified=True):
+	def update_status(self, status=None):
 		if not status:
 			if self.docstatus == 0:
 				status = "Draft"
 			elif self.docstatus == 1:
-				if self.status == "Draft":
-					status = "Open"
-				elif target_document_exists(self.name, self.purpose):
+				if target_document_exists(self.name, self.purpose):
 					status = "Completed"
+				else:
+					status = "Open"
 			elif self.docstatus == 2:
 				status = "Cancelled"
 
 		if status:
-			frappe.db.set_value("Pick List", self.name, "status", status, update_modified=update_modified)
+			self.db_set("status", status)
 
 	def update_reference_qty(self):
 		packed_items = []
@@ -172,8 +173,8 @@ class PickList(Document):
 			if (row.picked_qty / row.stock_qty) * 100 > over_delivery_receipt_allowance:
 				frappe.throw(
 					_(
-						f"You are picking more than required quantity for the item {row.item_code}. Check if there is any other pick list created for the sales order {row.sales_order}."
-					)
+						"You are picking more than required quantity for the item {0}. Check if there is any other pick list created for the sales order {1}."
+					).format(row.item_code, row.sales_order)
 				)
 
 	@frappe.whitelist()
@@ -264,6 +265,12 @@ class PickList(Document):
 		for item in locations:
 			if not item.item_code:
 				frappe.throw("Row #{0}: Item Code is Mandatory".format(item.idx))
+			if not cint(
+				frappe.get_cached_value("Item", item.item_code, "is_stock_item")
+			) and not frappe.db.exists(
+				"Product Bundle", {"new_item_code": item.item_code, "disabled": 0}
+			):
+				continue
 			item_code = item.item_code
 			reference = item.sales_order_item or item.material_request_item
 			key = (item_code, item.uom, item.warehouse, item.batch_no, reference)
@@ -355,6 +362,7 @@ class PickList(Document):
 					(pi_item.item_code.isin([x.item_code for x in items]))
 					& ((pi_item.picked_qty > 0) | (pi_item.stock_qty > 0))
 					& (pi.status != "Completed")
+					& (pi.status != "Cancelled")
 					& (pi_item.docstatus != 2)
 				)
 				.groupby(
@@ -399,7 +407,9 @@ class PickList(Document):
 		# bundle_item_code: Dict[component, qty]
 		product_bundle_qty_map = {}
 		for bundle_item_code in bundles:
-			bundle = frappe.get_last_doc("Product Bundle", {"new_item_code": bundle_item_code})
+			bundle = frappe.get_last_doc(
+				"Product Bundle", {"new_item_code": bundle_item_code, "disabled": 0}
+			)
 			product_bundle_qty_map[bundle_item_code] = {item.item_code: item.qty for item in bundle.items}
 		return product_bundle_qty_map
 
@@ -459,7 +469,7 @@ def get_items_with_location_and_quantity(item_doc, item_location_map, docstatus)
 		item_doc.qty if (docstatus == 1 and item_doc.stock_qty == 0) else item_doc.stock_qty
 	)
 
-	while remaining_stock_qty > 0 and available_locations:
+	while flt(remaining_stock_qty) > 0 and available_locations:
 		item_location = available_locations.pop(0)
 		item_location = frappe._dict(item_location)
 
@@ -468,7 +478,7 @@ def get_items_with_location_and_quantity(item_doc, item_location_map, docstatus)
 		)
 		qty = stock_qty / (item_doc.conversion_factor or 1)
 
-		uom_must_be_whole_number = frappe.db.get_value("UOM", item_doc.uom, "must_be_whole_number")
+		uom_must_be_whole_number = frappe.get_cached_value("UOM", item_doc.uom, "must_be_whole_number")
 		if uom_must_be_whole_number:
 			qty = floor(qty)
 			stock_qty = qty * item_doc.conversion_factor
@@ -595,7 +605,7 @@ def get_available_item_locations_for_serialized_item(
 		.select(sn.name, sn.warehouse)
 		.where((sn.item_code == item_code) & (sn.company == company))
 		.orderby(sn.purchase_date)
-		.limit(cint(required_qty + total_picked_qty))
+		.limit(ceil(required_qty + total_picked_qty))
 	)
 
 	if from_warehouses:
@@ -637,7 +647,7 @@ def get_available_item_locations_for_batched_item(
 		.groupby(sle.warehouse, sle.batch_no, sle.item_code)
 		.having(Sum(sle.actual_qty) > 0)
 		.orderby(IfNull(batch.expiry_date, "2200-01-01"), batch.creation, sle.batch_no, sle.warehouse)
-		.limit(cint(required_qty + total_picked_qty))
+		.limit(ceil(required_qty + total_picked_qty))
 	)
 
 	if from_warehouses:
@@ -670,7 +680,7 @@ def get_available_item_locations_for_serial_and_batched_item(
 					(conditions) & (sn.batch_no == location.batch_no) & (sn.warehouse == location.warehouse)
 				)
 				.orderby(sn.purchase_date)
-				.limit(cint(location.qty + total_picked_qty))
+				.limit(ceil(location.qty + total_picked_qty))
 			).run(as_dict=True)
 
 			serial_nos = [sn.name for sn in serial_nos]
@@ -689,7 +699,7 @@ def get_available_item_locations_for_other_item(
 		.select(bin.warehouse, bin.actual_qty.as_("qty"))
 		.where((bin.item_code == item_code) & (bin.actual_qty > 0))
 		.orderby(bin.creation)
-		.limit(cint(required_qty + total_picked_qty))
+		.limit(ceil(required_qty + total_picked_qty))
 	)
 
 	if from_warehouses:

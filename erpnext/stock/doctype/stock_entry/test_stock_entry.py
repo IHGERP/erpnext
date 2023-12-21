@@ -5,7 +5,7 @@
 import frappe
 from frappe.permissions import add_user_permission, remove_user_permission
 from frappe.tests.utils import FrappeTestCase, change_settings
-from frappe.utils import add_days, flt, nowdate, nowtime, today
+from frappe.utils import add_days, add_to_date, flt, nowdate, nowtime, today
 
 from erpnext.accounts.doctype.account.test_account import get_inventory_account
 from erpnext.stock.doctype.item.test_item import (
@@ -202,6 +202,9 @@ class TestStockEntry(FrappeTestCase):
 		)
 
 		end_transit_entry = make_stock_in_entry(transit_entry.name)
+
+		self.assertEqual(end_transit_entry.stock_entry_type, "Material Transfer")
+		self.assertEqual(end_transit_entry.purpose, "Material Transfer")
 		self.assertEqual(transit_entry.name, end_transit_entry.outgoing_stock_entry)
 		self.assertEqual(transit_entry.name, end_transit_entry.items[0].against_stock_entry)
 		self.assertEqual(transit_entry.items[0].name, end_transit_entry.items[0].ste_detail)
@@ -444,9 +447,7 @@ class TestStockEntry(FrappeTestCase):
 		repack.posting_date = nowdate()
 		repack.posting_time = nowtime()
 
-		expenses_included_in_valuation = frappe.get_value(
-			"Company", company, "expenses_included_in_valuation"
-		)
+		default_expense_account = frappe.get_value("Company", company, "default_expense_account")
 
 		items = get_multiple_items()
 		repack.items = []
@@ -457,12 +458,12 @@ class TestStockEntry(FrappeTestCase):
 			"additional_costs",
 			[
 				{
-					"expense_account": expenses_included_in_valuation,
+					"expense_account": default_expense_account,
 					"description": "Actual Operating Cost",
 					"amount": 1000,
 				},
 				{
-					"expense_account": expenses_included_in_valuation,
+					"expense_account": default_expense_account,
 					"description": "Additional Operating Cost",
 					"amount": 200,
 				},
@@ -501,9 +502,7 @@ class TestStockEntry(FrappeTestCase):
 		self.check_gl_entries(
 			"Stock Entry",
 			repack.name,
-			sorted(
-				[[stock_in_hand_account, 1200, 0.0], ["Expenses Included In Valuation - TCP1", 0.0, 1200.0]]
-			),
+			sorted([[stock_in_hand_account, 1200, 0.0], ["Cost of Goods Sold - TCP1", 0.0, 1200.0]]),
 		)
 
 	def check_stock_ledger_entries(self, voucher_type, voucher_no, expected_sle):
@@ -1505,6 +1504,7 @@ class TestStockEntry(FrappeTestCase):
 		self.assertEqual(se.items[0].item_name, item.item_name)
 		self.assertEqual(se.items[0].stock_uom, item.stock_uom)
 
+	@change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
 	def test_reposting_for_depedent_warehouse(self):
 		from erpnext.stock.doctype.repost_item_valuation.repost_item_valuation import repost_sl_entries
 		from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
@@ -1703,6 +1703,36 @@ class TestStockEntry(FrappeTestCase):
 		)
 
 		self.assertRaises(frappe.ValidationError, sr_doc.submit)
+
+	def test_enqueue_action(self):
+		frappe.flags.in_test = False
+		item_code = "Test Enqueue Item - 001"
+		create_item(item_code=item_code, is_stock_item=1, valuation_rate=10)
+
+		doc = make_stock_entry(
+			item_code=item_code,
+			posting_date=add_to_date(today(), months=-7),
+			posting_time="00:00:00",
+			purpose="Material Receipt",
+			qty=10,
+			to_warehouse="_Test Warehouse - _TC",
+			do_not_submit=True,
+		)
+
+		self.assertTrue(doc.is_enqueue_action())
+
+		doc = make_stock_entry(
+			item_code=item_code,
+			posting_date=today(),
+			posting_time="00:00:00",
+			purpose="Material Receipt",
+			qty=10,
+			to_warehouse="_Test Warehouse - _TC",
+			do_not_submit=True,
+		)
+
+		self.assertFalse(doc.is_enqueue_action())
+		frappe.flags.in_test = True
 
 
 def make_serialized_item(**args):

@@ -131,7 +131,7 @@ def validate_returned_items(doc):
 					)
 
 				elif ref.serial_no:
-					if not d.serial_no:
+					if d.qty and not d.serial_no:
 						frappe.throw(_("Row # {0}: Serial No is mandatory").format(d.idx))
 					else:
 						serial_nos = get_serial_nos(d.serial_no)
@@ -252,7 +252,6 @@ def get_already_returned_items(doc):
 			child.parent = par.name and par.docstatus = 1
 			and par.is_return = 1 and par.return_against = %s
 		group by item_code
-		for update
 	""".format(
 			column, doc.doctype, doc.doctype
 		),
@@ -306,7 +305,7 @@ def get_returned_qty_map_for_row(return_against, party, row_name, doctype):
 			fields += ["sum(abs(`tab{0}`.received_stock_qty)) as received_stock_qty".format(child_doctype)]
 
 	# Used retrun against and supplier and is_retrun because there is an index added for it
-	data = frappe.db.get_list(
+	data = frappe.get_all(
 		doctype,
 		fields=fields,
 		filters=[
@@ -346,6 +345,8 @@ def make_return_doc(doctype: str, source_name: str, target_doc=None):
 		elif doctype == "Purchase Invoice":
 			# look for Print Heading "Debit Note"
 			doc.select_print_heading = frappe.get_cached_value("Print Heading", _("Debit Note"))
+			if source.tax_withholding_category:
+				doc.set_onload("supplier_tds", source.tax_withholding_category)
 
 		for tax in doc.get("taxes") or []:
 			if tax.charge_type == "Actual":
@@ -355,6 +356,7 @@ def make_return_doc(doctype: str, source_name: str, target_doc=None):
 			if doc.doctype == "Sales Invoice" or doc.doctype == "POS Invoice":
 				doc.consolidated_invoice = ""
 				doc.set("payments", [])
+				doc.update_billed_amount_in_delivery_note = True
 				for data in source.payments:
 					paid_amount = 0.00
 					base_paid_amount = 0.00
@@ -400,6 +402,16 @@ def make_return_doc(doctype: str, source_name: str, target_doc=None):
 			serial_nos = list(set(get_serial_nos(source_doc.serial_no)) - set(returned_serial_nos))
 			if serial_nos:
 				target_doc.serial_no = "\n".join(serial_nos)
+
+		if source_doc.get("rejected_serial_no"):
+			returned_serial_nos = get_returned_serial_nos(
+				source_doc, source_parent, serial_no_field="rejected_serial_no"
+			)
+			rejected_serial_nos = list(
+				set(get_serial_nos(source_doc.rejected_serial_no)) - set(returned_serial_nos)
+			)
+			if rejected_serial_nos:
+				target_doc.rejected_serial_no = "\n".join(rejected_serial_nos)
 
 		if doctype in ["Purchase Receipt", "Subcontracting Receipt"]:
 			returned_qty_map = get_returned_qty_map_for_row(
@@ -518,8 +530,6 @@ def make_return_doc(doctype: str, source_name: str, target_doc=None):
 		set_missing_values,
 	)
 
-	doclist.set_onload("ignore_price_list", True)
-
 	return doclist
 
 
@@ -608,10 +618,17 @@ def get_filters(
 	if reference_voucher_detail_no:
 		filters["voucher_detail_no"] = reference_voucher_detail_no
 
+	if (
+		voucher_type in ["Purchase Receipt", "Purchase Invoice"]
+		and item_row
+		and item_row.get("warehouse")
+	):
+		filters["warehouse"] = item_row.get("warehouse")
+
 	return filters
 
 
-def get_returned_serial_nos(child_doc, parent_doc):
+def get_returned_serial_nos(child_doc, parent_doc, serial_no_field="serial_no"):
 	from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 
 	return_ref_field = frappe.scrub(child_doc.doctype)
@@ -620,7 +637,7 @@ def get_returned_serial_nos(child_doc, parent_doc):
 
 	serial_nos = []
 
-	fields = ["`{0}`.`serial_no`".format("tab" + child_doc.doctype)]
+	fields = [f"`{'tab' + child_doc.doctype}`.`{serial_no_field}`"]
 
 	filters = [
 		[parent_doc.doctype, "return_against", "=", parent_doc.name],
@@ -630,6 +647,6 @@ def get_returned_serial_nos(child_doc, parent_doc):
 	]
 
 	for row in frappe.get_all(parent_doc.doctype, fields=fields, filters=filters):
-		serial_nos.extend(get_serial_nos(row.serial_no))
+		serial_nos.extend(get_serial_nos(row.get(serial_no_field)))
 
 	return serial_nos
