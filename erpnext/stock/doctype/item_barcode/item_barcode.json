@@ -20,6 +20,7 @@
    "no_copy": 1,
    "unique": 1
   },
+  },
   {
    "fieldname": "barcode_type",
    "fieldtype": "Select",

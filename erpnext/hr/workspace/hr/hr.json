@@ -591,6 +591,46 @@
    "type": "Link"
   },
   {
+    "hidden": 0,
+    "is_query_report": 0,
+    "label": "Interview Type",
+    "link_count": 0,
+    "link_to": "Interview Type",
+    "link_type": "DocType",
+    "onboard": 0,
+    "type": "Link"
+   },
+   {
+    "hidden": 0,
+    "is_query_report": 0,
+    "label": "Interview Round",
+    "link_count": 0,
+    "link_to": "Interview Round",
+    "link_type": "DocType",
+    "onboard": 0,
+    "type": "Link"
+   },
+   {
+    "hidden": 0,
+    "is_query_report": 0,
+    "label": "Interview",
+    "link_count": 0,
+    "link_to": "Interview",
+    "link_type": "DocType",
+    "onboard": 0,
+    "type": "Link"
+   },
+   {
+    "hidden": 0,
+    "is_query_report": 0,
+    "label": "Interview Feedback",
+    "link_count": 0,
+    "link_to": "Interview Feedback",
+    "link_type": "DocType",
+    "onboard": 0,
+    "type": "Link"
+   },
+  {
    "hidden": 0,
    "is_query_report": 0,
    "label": "Loans",
@@ -836,8 +876,8 @@
    "type": "Link"
   }
  ],
- "modified": "2022-08-11 12:28:19.801133",
- "modified_by": "tech@inspiredholding.com",
+ "modified": "2022-05-30 17:19:40.524444",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
  "onboarding": "Human Resource",

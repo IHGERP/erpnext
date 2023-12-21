@@ -8,6 +8,15 @@
   "supplier",
   "supplier_part_no"
  ],
+ "actions": [],
+ "creation": "2013-02-22 01:28:01",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "supplier",
+  "supplier_part_no"
+ ],
  "fields": [
   {
    "fieldname": "supplier",
@@ -19,6 +28,12 @@
    "permlevel": 2
   },
   {
+   "fieldname": "supplier_part_no",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "label": "Supplier Part Number",
+   "print_width": "200px",
    "fieldname": "supplier_part_no",
    "fieldtype": "Data",
    "in_global_search": 1,

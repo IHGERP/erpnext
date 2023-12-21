@@ -4,6 +4,8 @@
 import json
 
 import frappe
+from frappe import _
+from frappe.utils import get_link_to_form, parse_json
 
 SLE_FIELDS = (
 	"name",
@@ -21,6 +23,7 @@ SLE_FIELDS = (
 	"stock_value",
 	"stock_value_difference",
 	"valuation_rate",
+	"voucher_detail_no",
 )
 
 
@@ -39,11 +42,7 @@ def get_stock_ledger_entries(filters):
 	return frappe.get_all(
 		"Stock Ledger Entry",
 		fields=SLE_FIELDS,
-		filters={
-			"item_code": filters.item_code,
-			"warehouse": filters.warehouse,
-			"is_cancelled": 0
-		},
+		filters={"item_code": filters.item_code, "warehouse": filters.warehouse, "is_cancelled": 0},
 		order_by="timestamp(posting_date, posting_time), creation",
 	)
 
@@ -60,10 +59,15 @@ def add_invariant_check_fields(sles):
 			fifo_qty += qty
 			fifo_value += qty * rate
 
+		if sle.actual_qty < 0:
+			sle.consumption_rate = sle.stock_value_difference / sle.actual_qty
+
 		balance_qty += sle.actual_qty
 		balance_stock_value += sle.stock_value_difference
 		if sle.voucher_type == "Stock Reconciliation" and not sle.batch_no:
-			balance_qty = sle.qty_after_transaction
+			balance_qty = frappe.db.get_value("Stock Reconciliation Item", sle.voucher_detail_no, "qty")
+			if balance_qty is None:
+				balance_qty = sle.qty_after_transaction
 
 		sle.fifo_queue_qty = fifo_qty
 		sle.fifo_stock_value = fifo_value
@@ -103,17 +107,17 @@ def get_columns():
 		},
 		{
 			"fieldname": "posting_date",
-			"fieldtype": "Date",
+			"fieldtype": "Data",
 			"label": "Posting Date",
 		},
 		{
 			"fieldname": "posting_time",
-			"fieldtype": "Time",
+			"fieldtype": "Data",
 			"label": "Posting Time",
 		},
 		{
 			"fieldname": "creation",
-			"fieldtype": "Datetime",
+			"fieldtype": "Data",
 			"label": "Creation",
 		},
 		{
@@ -145,9 +149,9 @@ def get_columns():
 			"label": "Incoming Rate",
 		},
 		{
-			"fieldname": "outgoing_rate",
+			"fieldname": "consumption_rate",
 			"fieldtype": "Float",
-			"label": "Outgoing Rate",
+			"label": "Consumption Rate",
 		},
 		{
 			"fieldname": "qty_after_transaction",
@@ -169,7 +173,6 @@ def get_columns():
 			"fieldtype": "Data",
 			"label": "FIFO Queue",
 		},
-
 		{
 			"fieldname": "fifo_queue_qty",
 			"fieldtype": "Float",
@@ -230,7 +233,6 @@ def get_columns():
 			"fieldtype": "Float",
 			"label": "(I) Valuation Rate as per FIFO",
 		},
-
 		{
 			"fieldname": "fifo_valuation_diff",
 			"fieldtype": "Float",
@@ -247,3 +249,35 @@ def get_columns():
 			"label": "H - J",
 		},
 	]
+
+
+@frappe.whitelist()
+def create_reposting_entries(rows, item_code=None, warehouse=None):
+	if isinstance(rows, str):
+		rows = parse_json(rows)
+
+	entries = []
+	for row in rows:
+		row = frappe._dict(row)
+
+		try:
+			doc = frappe.get_doc(
+				{
+					"doctype": "Repost Item Valuation",
+					"based_on": "Item and Warehouse",
+					"status": "Queued",
+					"item_code": item_code or row.item_code,
+					"warehouse": warehouse or row.warehouse,
+					"posting_date": row.posting_date,
+					"posting_time": row.posting_time,
+					"allow_nagative_stock": 1,
+				}
+			).submit()
+
+			entries.append(get_link_to_form("Repost Item Valuation", doc.name))
+		except frappe.DuplicateEntryError:
+			continue
+
+	if entries:
+		entries = ", ".join(entries)
+		frappe.msgprint(_("Reposting entries created: {0}").format(entries))
