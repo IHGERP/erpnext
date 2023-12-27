@@ -417,8 +417,9 @@ erpnext.selling.SalesOrderController = class SalesOrderController extends erpnex
 
 	make_material_request() {
 		frappe.model.open_mapped_doc({
-			method: "erpnext.selling.doctype.sales_order.sales_order.make_material_request",
+			method: "ihgind_custom.overrides.ihg_sales_order.make_material_request",
 			frm: this.frm
+			// "erpnext.selling.doctype.sales_order.sales_order.make_material_request"
 		})
 	}
 

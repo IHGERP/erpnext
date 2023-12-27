@@ -480,18 +480,19 @@ $.extend(erpnext.item, {
 			var data = dialog.get_values();
 			if(!data) return;
 
-			// call the server to make the variant
-			data.template = frm.doc.name;
-			frappe.call({
-				method: "erpnext.controllers.item_variant.get_variant",
-				args: data,
-				callback: function(r) {
-					var doclist = frappe.model.sync(r.message);
-					dialog.hide();
-					frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
-				}
-			});
-		})
+		// call the server to make the variant
+		data.template = frm.doc.name;
+		frappe.call({
+			method: "ihgind_custom.overrides.ihg_item_variant.get_variant",
+			// "erpnext.controllers.item_variant.get_variant",
+			args: data,
+			callback: function(r) {
+				var doclist = frappe.model.sync(r.message);
+				dialog.hide();
+				frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
+			}
+		});
+	})
 
 		dialog.show();
 	},
