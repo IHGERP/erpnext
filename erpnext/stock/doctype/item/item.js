@@ -3,9 +3,6 @@
 
 frappe.provide("erpnext.item");
 
-const SALES_DOCTYPES = ['Quotation', 'Sales Order', 'Delivery Note', 'Sales Invoice'];
-const PURCHASE_DOCTYPES = ['Purchase Order', 'Purchase Receipt', 'Purchase Invoice'];
-
 frappe.ui.form.on("Item", {
 	setup: function(frm) {
 		frm.add_fetch('attribute', 'numeric_values', 'numeric_values');
@@ -350,20 +347,18 @@ $.extend(erpnext.item, {
 			}
 		}
 
-		frm.fields_dict["item_defaults"].grid.get_field("deferred_revenue_account").get_query = function(doc, cdt, cdn) {
+		frm.fields_dict['deferred_revenue_account'].get_query = function() {
 			return {
 				filters: {
-					"company": locals[cdt][cdn].company,
 					'root_type': 'Liability',
 					"is_group": 0
 				}
 			}
 		}
 
-		frm.fields_dict["item_defaults"].grid.get_field("deferred_expense_account").get_query = function(doc, cdt, cdn) {
+		frm.fields_dict['deferred_expense_account'].get_query = function() {
 			return {
 				filters: {
-					"company": locals[cdt][cdn].company,
 					'root_type': 'Asset',
 					"is_group": 0
 				}
@@ -480,19 +475,19 @@ $.extend(erpnext.item, {
 			var data = dialog.get_values();
 			if(!data) return;
 
-		// call the server to make the variant
-		data.template = frm.doc.name;
-		frappe.call({
-			method: "ihgind_custom.overrides.ihg_item_variant.get_variant",
-			// "erpnext.controllers.item_variant.get_variant",
-			args: data,
-			callback: function(r) {
-				var doclist = frappe.model.sync(r.message);
-				dialog.hide();
-				frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
-			}
-		});
-	})
+			// call the server to make the variant
+			data.template = frm.doc.name;
+			frappe.call({
+				method: "ihgind_custom.overrides.ihg_item_variant.get_variant",
+				// "erpnext.controllers.item_variant.get_variant",
+				args: data,
+				callback: function(r) {
+					var doclist = frappe.model.sync(r.message);
+					dialog.hide();
+					frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
+				}
+			});
+		})
 
 		dialog.show();
 	},
@@ -563,7 +558,8 @@ $.extend(erpnext.item, {
 
 				me.multiple_variant_dialog.hide();
 				frappe.call({
-					method: "erpnext.controllers.item_variant.enqueue_multiple_variant_creation",
+					method: "ihgind_custom.overrides.ihg_item_variant.enqueue_multiple_variant_creation",
+					// "erpnext.controllers.item_variant.enqueue_multiple_variant_creation",
 					args: {
 						"item": frm.doc.name,
 						"args": selected_attributes
@@ -697,7 +693,8 @@ $.extend(erpnext.item, {
 			var args = d.get_values();
 			if(!args) return;
 			frappe.call({
-				method: "erpnext.controllers.item_variant.get_variant",
+				method: "ihgind_custom.overrides.ihg_item_variant.get_variant",
+				// "erpnext.controllers.item_variant.get_variant",
 				btn: d.get_primary_btn(),
 				args: {
 					"template": frm.doc.name,
@@ -720,7 +717,8 @@ $.extend(erpnext.item, {
 					} else {
 						d.hide();
 						frappe.call({
-							method: "erpnext.controllers.item_variant.create_variant",
+							method: "ihgind_custom.overrides.ihg_item_variant.create_variant",
+							// "erpnext.controllers.item_variant.create_variant",
 							args: {
 								"item": frm.doc.name,
 								"args": d.get_values()
@@ -900,13 +898,7 @@ function open_form(frm, doctype, child_doctype, parentfield) {
 		let new_child_doc = frappe.model.add_child(new_doc, child_doctype, parentfield);
 		new_child_doc.item_code = frm.doc.name;
 		new_child_doc.item_name = frm.doc.item_name;
-		if (in_list(SALES_DOCTYPES, doctype) && frm.doc.sales_uom) {
-			new_child_doc.uom = frm.doc.sales_uom;
-		} else if (in_list(PURCHASE_DOCTYPES, doctype) && frm.doc.purchase_uom) {
-			new_child_doc.uom = frm.doc.purchase_uom;
-		} else {
-			new_child_doc.uom = frm.doc.stock_uom;
-		}
+		new_child_doc.uom = frm.doc.stock_uom;
 		new_child_doc.description = frm.doc.description;
 		if (!new_child_doc.qty) {
 			new_child_doc.qty = 1.0;
