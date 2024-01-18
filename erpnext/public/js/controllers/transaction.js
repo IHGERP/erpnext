@@ -174,7 +174,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 				return {
 					filters: {
 						"company": doc.company,
-						"report_type": "Profit and Loss",
+						// "report_type": "Profit and Loss",
 						"is_group": 0
 					}
 				};
